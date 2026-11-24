@@ -257,18 +257,6 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
       </label>
     </section>
 
-    <section class="blk">
-      <div class="blk-h">
-        Categories
-        <span class="seg seg-sm" data-key="catMode" role="group" aria-label="Match categories">
-          <button type="button" data-v="any" title="Show documents in any selected category">Any</button>
-          <button type="button" data-v="all" title="Show only documents in every selected category">All</button>
-        </span>
-      </div>
-      <div class="hint">Tick one or more. Numbers show how many match the other filters.</div>
-      <div id="cats"></div>
-    </section>
-
     <details class="blk" open>
       <summary>Time and companies <span class="badge" data-sec="time"></span></summary>
       <div class="field">
@@ -301,6 +289,19 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
         <select id="grp"><option value="">Any</option></select>
       </div>
     </details>
+
+    <section class="blk">
+      <div class="blk-h">
+        Categories
+        <span class="seg seg-sm" data-key="catMode" role="group" aria-label="Match categories">
+          <button type="button" data-v="any" title="Show documents in any selected category">Any</button>
+          <button type="button" data-v="all" title="Show only documents in every selected category">All</button>
+        </span>
+      </div>
+      <div class="hint">Tick one or more. Numbers show how many match the other filters.</div>
+      <div id="cats"></div>
+    </section>
+
 
     <details class="blk">
       <summary>PPE detail <span class="badge" data-sec="ppe"></span></summary>
