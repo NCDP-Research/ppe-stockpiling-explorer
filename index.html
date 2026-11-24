@@ -39,10 +39,108 @@ body {
   margin:0; background:var(--page); color:var(--text-primary);
   font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
 }
-header { padding:18px 22px 12px; border-bottom:1px solid var(--border); background:var(--surface-1); }
+header.top { padding:14px 22px 12px; border-bottom:1px solid var(--border); background:var(--surface-1);
+  display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.top-actions { display:flex; gap:8px; flex-shrink:0; }
 h1 { margin:0 0 2px; font-size:17px; font-weight:650; letter-spacing:-0.01em; }
 .sub { color:var(--text-secondary); font-size:12.5px; }
-main { padding:16px 22px 60px; max-width:1500px; }
+main { padding:16px 22px 60px; min-width:0; }
+
+/* ---- layout: filters beside results ---- */
+.layout { display:grid; grid-template-columns:312px minmax(0,1fr); align-items:start; }
+.side {
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+  background:var(--surface-1); border-right:1px solid var(--border);
+  padding:0 16px 40px;
+}
+.side-head { position:sticky; top:0; z-index:2; background:var(--surface-1);
+  display:flex; align-items:center; gap:12px; padding:14px 0 10px;
+  border-bottom:1px solid var(--border); }
+.side-head strong { font-size:14px; flex:1; }
+.blk { padding:14px 0; border-bottom:1px solid var(--border); }
+.blk-h, .blk > summary { font-size:12px; font-weight:650; color:var(--text-primary);
+  text-transform:uppercase; letter-spacing:.05em; display:flex; align-items:center;
+  justify-content:space-between; gap:8px; margin-bottom:8px; }
+.blk > summary { cursor:pointer; list-style:none; margin:0; }
+.blk > summary::-webkit-details-marker { display:none; }
+.blk > summary::after { content:'+'; font-size:16px; font-weight:400; color:var(--muted);
+  margin-left:auto; }
+.blk[open] > summary::after { content:'–'; }
+.blk[open] > summary { margin-bottom:10px; }
+.hint { font-size:11.5px; color:var(--muted); line-height:1.45; margin:4px 0 8px; }
+.lite { font-weight:400; color:var(--muted); text-transform:none; letter-spacing:0; }
+.field { display:flex; flex-direction:column; gap:5px; margin:0 0 12px; }
+.field:last-child { margin-bottom:0; }
+.field .lbl { font-size:12px; color:var(--text-secondary); font-weight:560; }
+.side select, .side input[type=search] { width:100%; min-width:0; }
+.check { display:flex; gap:7px; align-items:center; font-size:12.5px;
+  color:var(--text-secondary); margin-top:8px; cursor:pointer; }
+.check input { margin:0; accent-color:var(--series-1); }
+.badge { font-size:10.5px; font-weight:650; background:var(--series-1); color:#fff;
+  border-radius:999px; padding:0 7px; line-height:17px; min-width:18px; text-align:center;
+  letter-spacing:0; }
+.badge:empty { display:none; }
+
+/* ---- category groups ---- */
+.cg { margin:2px 0 4px; }
+.cg > summary { display:flex; align-items:center; gap:8px; cursor:pointer; list-style:none;
+  padding:7px 0 5px; font-size:12.5px; font-weight:620; color:var(--text-primary); }
+.cg > summary::-webkit-details-marker { display:none; }
+.cg > summary::before { content:'▸'; color:var(--muted); font-size:10px; width:10px;
+  transition:transform .12s; }
+.cg[open] > summary::before { transform:rotate(90deg); }
+.cg > summary .badge { margin-left:auto; }
+.cg .gd { font-size:11px; color:var(--muted); margin:-2px 0 4px 18px; line-height:1.4; }
+.ci { display:grid; grid-template-columns:auto 1fr auto; gap:8px; align-items:start;
+  padding:4px 6px 4px 16px; border-radius:6px; cursor:pointer; font-size:12.5px;
+  line-height:1.35; }
+.ci:hover { background:var(--chip); }
+.ci.sub { padding-left:38px; }
+.ci input { margin:2px 0 0; accent-color:var(--series-1); }
+.ci .n { font-size:11.5px; color:var(--muted); font-variant-numeric:tabular-nums; }
+.ci.zero { color:var(--muted); }
+.ci[data-on="1"] { background:var(--chip); font-weight:560; }
+.ci[data-on="1"] .n { color:var(--text-primary); }
+
+/* ---- segmented buttons ---- */
+.seg { display:inline-flex; border:1px solid var(--axis); border-radius:7px; overflow:hidden;
+  background:var(--surface-1); }
+.seg button { font:inherit; font-size:12px; border:none; background:none; color:var(--text-secondary);
+  padding:5px 9px; cursor:pointer; border-right:1px solid var(--axis); flex:1; white-space:nowrap; }
+.seg button:last-child { border-right:none; }
+.seg button:hover { color:var(--text-primary); background:var(--chip); }
+.seg button[aria-pressed="true"] { background:var(--text-primary); color:var(--surface-1); font-weight:600; }
+.seg-sm button { font-size:11px; padding:3px 8px; text-transform:none; letter-spacing:0; }
+.field .seg { display:flex; }
+
+/* ---- active filter chips ---- */
+.active { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 4px;
+  font-size:12.5px; color:var(--text-secondary); min-height:28px; }
+.chipx { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--axis);
+  background:var(--chip); border-radius:999px; padding:3px 4px 3px 10px; color:var(--text-primary);
+  font-size:12px; }
+.chipx button { border:none; background:none; color:var(--muted); cursor:pointer; font-size:14px;
+  line-height:1; padding:0 5px; border-radius:50%; }
+.chipx button:hover { color:var(--text-primary); background:var(--surface-1); }
+.rtools { display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-size:12px; }
+/* The table scrolls sideways on its own rather than widening the page. */
+.tblwrap { overflow-x:auto; border-radius:9px; }
+.tblwrap table { min-width:760px; }
+
+/* ---- narrow screens: filters slide in ---- */
+.only-narrow { display:none; }
+.scrim { display:none; }
+@media (max-width:900px) {
+  .only-narrow { display:inline-flex; }
+  .layout { display:block; }
+  .side { position:fixed; left:0; top:0; bottom:0; width:min(340px, 88vw); z-index:50;
+    transform:translateX(-102%); transition:transform .18s ease; box-shadow:0 0 30px rgba(0,0,0,.2); }
+  .side.open { transform:none; }
+  .scrim.open { display:block; position:fixed; inset:0; background:rgba(0,0,0,.32); z-index:45; }
+  main { padding:14px 16px 50px; }
+  header.top { padding:12px 16px; }
+  h1 { font-size:15px; }
+}
 
 /* ---- stat tiles ---- */
 .tiles { display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 16px; }
@@ -55,30 +153,14 @@ main { padding:16px 22px 60px; max-width:1500px; }
 .tile .s { font-size:11px; color:var(--muted); margin-top:3px; }
 .tile.hl { border-color:var(--series-1); }
 
-/* ---- filters ---- */
-.filters {
-  background:var(--surface-1); border:1px solid var(--border); border-radius:9px;
-  padding:12px 14px; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;
-}
-.fg { display:flex; flex-direction:column; gap:5px; }
-.fg > label { font-size:11px; color:var(--text-secondary); font-weight:600;
-  text-transform:uppercase; letter-spacing:.04em; }
+/* ---- form controls ---- */
 input[type=search], select {
-  font:inherit; padding:7px 9px; border:1px solid var(--axis); border-radius:6px;
-  background:var(--surface-1); color:var(--text-primary); min-width:150px;
+  font:inherit; font-size:13px; padding:7px 9px; border:1px solid var(--axis); border-radius:6px;
+  background:var(--surface-1); color:var(--text-primary);
 }
-input[type=search] { min-width:290px; }
-input:focus-visible, select:focus-visible, button:focus-visible {
+input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible {
   outline:2px solid var(--series-1); outline-offset:1px;
 }
-.cats { display:flex; gap:7px; flex-wrap:wrap; }
-.cat {
-  display:inline-flex; align-items:center; gap:6px; cursor:pointer; user-select:none;
-  border:1px solid var(--axis); border-radius:999px; padding:5px 11px 5px 9px;
-  font-size:12.5px; background:var(--surface-1);
-}
-.cat input { margin:0; accent-color:var(--series-1); }
-.cat[data-on="1"] { border-color:var(--text-secondary); background:var(--chip); }
 .dot { width:9px; height:9px; border-radius:50%; display:inline-block; }
 button.link {
   background:none; border:none; color:var(--series-1); cursor:pointer;
@@ -147,132 +229,146 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
 </style>
 </head>
 <body data-palette="#2a78d6,#eb6834">
-<header>
-  <h1>PPE &amp; antiviral stockpiling incentives — EDGAR 10-K explorer</h1>
-  <div class="sub">4,121 documents · 1,483 companies · 2001–2026 · full-text search of SEC annual reports</div>
+<header class="top">
+  <div>
+    <h1>PPE &amp; antiviral stockpiling incentives — EDGAR 10-K explorer</h1>
+    <div class="sub">4,121 documents · 1,483 companies · 2001–2026 · full-text search of SEC annual reports</div>
+  </div>
+  <div class="top-actions">
+    <button class="toggle only-narrow" id="openSide" type="button">Filters <span class="badge" id="nActive"></span></button>
+    <button class="toggle" id="theme" type="button">Dark mode</button>
+  </div>
 </header>
+
+<div class="layout">
+  <aside class="side" id="side" aria-label="Filters">
+    <div class="side-head">
+      <strong>Filters</strong>
+      <button class="link" id="reset" type="button">Clear all</button>
+      <button class="link only-narrow" id="closeSide" type="button">Done</button>
+    </div>
+
+    <section class="blk">
+      <label class="blk-h" for="q">Search</label>
+      <input type="search" id="q" placeholder="Company, CIK, or a word in a passage" autocomplete="off">
+      <div class="hint" id="scope">Searches company names, CIKs and the extracted passages.</div>
+      <label class="check" id="ftWrap" style="display:none">
+        <input type="checkbox" id="ft"> Search the full text of every filing
+      </label>
+    </section>
+
+    <section class="blk">
+      <div class="blk-h">
+        Categories
+        <span class="seg seg-sm" data-key="catMode" role="group" aria-label="Match categories">
+          <button type="button" data-v="any" title="Show documents in any selected category">Any</button>
+          <button type="button" data-v="all" title="Show only documents in every selected category">All</button>
+        </span>
+      </div>
+      <div class="hint">Tick one or more. Numbers show how many match the other filters.</div>
+      <div id="cats"></div>
+    </section>
+
+    <details class="blk" open>
+      <summary>Time and companies <span class="badge" data-sec="time"></span></summary>
+      <div class="field">
+        <span class="lbl">Filed</span>
+        <div class="seg" data-key="band" role="group" aria-label="Date range">
+          <button type="button" data-v="all">All</button>
+          <button type="button" data-v="2000-2010">2001–10</button>
+          <button type="button" data-v="2011-2019">2011–19</button>
+          <button type="button" data-v="2020-2026">2020–26</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">Pharma &amp; biotech companies</span>
+        <div class="seg" data-key="pharma" role="group" aria-label="Pharma and biotech">
+          <button type="button" data-v="all">Include</button>
+          <button type="button" data-v="exclude">Exclude</button>
+          <button type="button" data-v="only">Only these</button>
+        </div>
+      </div>
+      <div class="field">
+        <label class="lbl" for="sector">Sector</label>
+        <select id="sector"><option value="">All sectors</option></select>
+      </div>
+      <div class="field">
+        <label class="lbl" for="sic">Industry (SIC code)</label>
+        <select id="sic"><option value="">All industries</option></select>
+      </div>
+      <div class="field">
+        <label class="lbl" for="grp">Place in the supply chain <span class="lite">(from the SIC code)</span></label>
+        <select id="grp"><option value="">Any</option></select>
+      </div>
+    </details>
+
+    <details class="blk">
+      <summary>PPE detail <span class="badge" data-sec="ppe"></span></summary>
+      <div class="field">
+        <label class="lbl" for="pr">What the company does with PPE</label>
+        <select id="pr">
+          <option value="">Any</option>
+          <optgroup label="Said in this filing">
+            <option value="buyer">Buys it for its staff</option>
+            <option value="maker">Makes or sells it</option>
+            <option value="both">Both</option>
+            <option value="regulatory">Only as a regulatory requirement</option>
+            <option value="unclear">Mentions it, role unclear</option>
+          </optgroup>
+          <optgroup label="Across all the company's filings">
+            <option value="co:buyer only">Never makes or sells PPE</option>
+            <option value="co:maker or both">Makes or sells PPE in some filing</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="field">
+        <label class="lbl" for="ctx">Why PPE is mentioned</label>
+        <select id="ctx">
+          <option value="">Any reason</option>
+          <option value="emergency">An emergency or pandemic</option>
+          <option value="occupational">Everyday workplace hazards</option>
+          <option value="both">Both</option>
+          <option value="unclear">No reason stated</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="lbl" for="prb">Evidence for the PPE role <span class="lite">(strongest first)</span></label>
+        <select id="prb"><option value="">Any evidence</option></select>
+      </div>
+    </details>
+
+    <details class="blk">
+      <summary>Stockpile detail <span class="badge" data-sec="stock"></span></summary>
+      <div class="hint">Either choice limits results to the stockpile category.</div>
+      <div class="field">
+        <label class="lbl" for="ssu">What is stockpiled</label>
+        <select id="ssu">
+          <option value="">Anything</option>
+          <option value="ppe">Protective equipment</option>
+          <option value="medical">Drugs, vaccines, medical supplies</option>
+          <option value="cm">Countermeasures &amp; prophylaxis only</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="lbl" for="sho">Whose stockpile it is</label>
+        <select id="sho">
+          <option value="">Anyone</option>
+          <option value="government">A government or public body</option>
+          <option value="customer">The company's customers</option>
+          <option value="self">The company, as stock to sell</option>
+          <option value="held">The company, as preparedness</option>
+          <option value="peer">Other private companies</option>
+          <option value="unattributed">No holder named</option>
+        </select>
+      </div>
+    </details>
+  </aside>
+  <div class="scrim only-narrow" id="scrim"></div>
 
 <main class="viz-root">
   <div class="tiles" id="tiles"></div>
 
-  <div class="filters">
-    <div class="fg">
-      <label for="q">Search <span id="scope">company, CIK or extracted passages</span></label>
-      <input type="search" id="q" placeholder="e.g. Lakeland, 798081, grant, their employees" autocomplete="off">
-      <label class="cat" id="ftWrap" data-on="0" style="margin-top:6px;display:none">
-        <input type="checkbox" id="ft">
-        <i class="dot" style="background:var(--good)"></i>Full text of all filings
-      </label>
-    </div>
-    <div class="fg">
-      <label for="catmode">Categories
-        <select id="catmode" style="margin-left:8px;font-weight:400;text-transform:none">
-          <option value="any">match any (OR)</option>
-          <option value="all">match all (AND)</option>
-        </select>
-      </label>
-      <div class="cats" id="cats"></div>
-    </div>
-    <div class="fg">
-      <label for="band">Date range</label>
-      <select id="band">
-        <option value="all">All time (2001–2026)</option>
-        <option value="2000-2010">2000–2010</option>
-        <option value="2011-2019">2011–2019</option>
-        <option value="2020-2026">2020–2026</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label for="pharma">Pharma &amp; biotech <span style="font-weight:400;text-transform:none">(applies to everything)</span></label>
-      <select id="pharma">
-        <option value="all">Include all companies</option>
-        <option value="exclude">Exclude pharma &amp; biotech</option>
-        <option value="only">Pharma &amp; biotech only</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label for="grp">Supply-chain role <span style="font-weight:400;text-transform:none">(by SIC)</span></label>
-      <select id="grp"><option value="">All roles</option></select>
-    </div>
-    <div class="fg">
-      <label for="pr">PPE role <span style="font-weight:400;text-transform:none">(by disclosure)</span></label>
-      <select id="pr">
-        <option value="">Any</option>
-        <optgroup label="This filing says">
-          <option value="maker">Makes or sells PPE</option>
-          <option value="buyer">Buys PPE for staff</option>
-          <option value="both">Both</option>
-          <option value="regulatory">Regulatory mention only</option>
-          <option value="unclear">Mentions PPE, role unclear</option>
-        </optgroup>
-        <optgroup label="This company, across all its filings">
-          <option value="co:buyer only">Never makes PPE — pure buyer</option>
-          <option value="co:maker or both">Makes or sells PPE somewhere</option>
-        </optgroup>
-      </select>
-    </div>
-    <div class="fg">
-      <label for="ctx">PPE context <span style="font-weight:400;text-transform:none">(why it is mentioned)</span></label>
-      <select id="ctx">
-        <option value="">Any context</option>
-        <option value="emergency">Emergency / pandemic</option>
-        <option value="occupational">Occupational exposure</option>
-        <option value="both">Both</option>
-        <option value="unclear">Neither stated</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label for="prb">Role evidence <span style="font-weight:400;text-transform:none">(how the call was made)</span></label>
-      <select id="prb"><option value="">Any basis</option></select>
-    </div>
-    <div class="fg">
-      <label for="ssu">Stockpile subject <span style="font-weight:400;text-transform:none">(what is being held)</span></label>
-      <select id="ssu">
-        <option value="">Any subject</option>
-        <option value="cm">Countermeasures &amp; prophylaxis only</option>
-        <option value="ppe">Protective equipment</option>
-        <option value="medical">Drugs, vaccines, medical supplies</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label for="sho">Stockpile holder <span style="font-weight:400;text-transform:none">(whose stock it is)</span></label>
-      <select id="sho">
-        <option value="">Any holder</option>
-        <option value="held">The filer holds it, as preparedness (0)</option>
-        <option value="self">The filer holds it, as stock to sell (10)</option>
-        <option value="peer">Other private companies (1)</option>
-        <option value="customer">Its customers (16)</option>
-        <option value="government">A government or public body (201)</option>
-        <option value="unattributed">No holder named (23)</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label for="sector">Sector</label>
-      <select id="sector"><option value="">All sectors</option></select>
-    </div>
-    <div class="fg">
-      <label for="sic">Industry (SIC)</label>
-      <select id="sic"><option value="">All industries</option></select>
-    </div>
-    <div class="fg">
-      <label for="unit">Count by</label>
-      <select id="unit">
-        <option value="doc">Documents</option>
-        <option value="filing">Filings</option>
-        <option value="company">Companies</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label>&nbsp;</label>
-      <button class="toggle" id="theme" type="button">Dark mode</button>
-    </div>
-    <div class="fg">
-      <label>&nbsp;</label>
-      <button class="link" id="reset" type="button">Reset filters</button>
-    </div>
-  </div>
-
-  <p class="note" id="activeNote"></p>
+  <div class="active" id="active"></div>
 
   <div class="charts">
     <div class="card">
@@ -297,10 +393,16 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
 
   <div class="rhead">
     <h2 id="rcount">Results</h2>
-    <div style="font-size:12px;color:var(--text-secondary)">
-      Click any row to read the matching passage · column headings sort
+    <div class="rtools">
+      <span class="lite">Click a row to read the passage · click a heading to sort</span>
+      <span class="seg seg-sm" data-key="unit" role="group" aria-label="Count by">
+        <button type="button" data-v="doc">Documents</button>
+        <button type="button" data-v="filing">Filings</button>
+        <button type="button" data-v="company">Companies</button>
+      </span>
     </div>
   </div>
+  <div class="tblwrap">
   <table id="tbl">
     <thead><tr>
       <th data-k="c">Company</th>
@@ -313,6 +415,7 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
     </tr></thead>
     <tbody id="rows"></tbody>
   </table>
+  </div>
   <div id="more" style="margin-top:12px"></div>
 
   <footer>
@@ -610,6 +713,7 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
     filters still narrow a full-text result set.
   </footer>
 </main>
+</div>
 
 <div class="tt" id="tt"></div>
 
@@ -641,59 +745,75 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
     return;
   }
 
+  // Categories, in the groups the sidebar shows them in. `sub` marks a
+  // narrower cut of the item above it; `hint` is the hover explanation.
+  // Counts are not written into the labels: the sidebar computes them live
+  // against the other filters, so they always describe what a tick would add.
+  const GROUPS = [
+    { id:'topic', t:'What the filing mentions', open:true,
+      d:'The searches that built the corpus.' },
+    { id:'staff', t:'Employers and their own staff', open:true,
+      d:'The demand side: what companies say they do for their workforce.' },
+    { id:'stock', t:'Stockpiling',
+      d:'Stockpile language, and who is said to hold the stock.' },
+    { id:'inc',   t:'Incentives',
+      d:'Payments, grants or contracts that encourage supply or stocking.' },
+    { id:'gov',   t:'Government and public health',
+      d:'Public programmes and agencies, which are not private stockpiling.' },
+  ];
   const CATS = [
-    // First, because it is the demand side the research question is about,
-    // and it is large: a thousand employers saying they hand protective
-    // equipment to their own people. Everything below it asks for more.
-    { k:'bpp',label:'Provides PPE to its own staff (2,293)',
-                                                color:'var(--series-1)' },
-    { k:'p',  label:'PPE mentioned',            color:'var(--series-1)' },
-    { k:'v',  label:'Antivirals mentioned',     color:'var(--series-2)' },
-    { k:'pi', label:'PPE + incentives',         color:'var(--series-1)' },
-    { k:'vi', label:'Antivirals + incentives',  color:'var(--series-2)' },
-    { k:'ps', label:'PPE + stockpiling',        color:'var(--series-1)' },
-    { k:'vs', label:'Antivirals + stockpiling', color:'var(--series-2)' },
-    { k:'st', label:'Stockpile: PPE or medical (251)', color:'var(--muted)' },
-    { k:'ver',label:'Verified incentive (17)',  color:'var(--good)'     },
-    { k:'bs', label:'Workforce PPE stock (10)', color:'var(--good)'    },
-    { k:'pk', label:'Preparedness, verified (5)',color:'var(--good)'    },
-    { k:'pw', label:'Workforce preparedness (82)',color:'var(--good)'   },
-    // The only direct evidence here that private stockpiling happened.
-    { k:'sda',label:'Stockpiling by an unnamed buyer (6)',
-                                                color:'var(--good)'     },
-    // Asked only of companies that make or sell PPE (manufacturer.py).
-    { k:'mst',label:'PPE maker holds its own stockpile (7)',
-                                                color:'var(--good)'     },
-    { k:'min',label:'Incentive to a PPE maker (28)',
-                                                color:'var(--good)'     },
-    // Regulation S-K Item 101 human capital disclosure (human_capital.py),
-    // and the PPE phrase inside that section.
-    { k:'hc', label:'Human capital section (2,595)',
-                                                color:'var(--muted)'    },
-    { k:'hcp',label:'PPE inside the human capital section (1,055)',
-                                                color:'var(--series-1)' },
-    // Why the section mentions PPE (human_capital.py): a named emergency -
-    // pandemic, infectious disease, natural disaster - or ordinary
-    // on-the-job safety; a document can be both. The third is the subset
-    // of emergency mentions that show a plan or supply in place beforehand.
-    { k:'hpe',label:'… for an emergency: pandemic, disease, disaster (851)',
-                                                color:'var(--good)'     },
-    { k:'hpo',label:'… for on-the-job safety (325)',
-                                                color:'var(--muted)'    },
-    { k:'hpr',label:'… with a preparedness plan or standing supply (15)',
-                                                color:'var(--good)'     },
-    // The federal Strategic National Stockpile (sns.py). A public programme,
-    // not private stockpiling: nearly every filer naming it is a vendor.
-    { k:'snp',label:'Strategic National Stockpile mentioned (133)',
-                                                color:'var(--muted)'    },
-    // State and local health departments (health_dept.py). The second
-    // toggle keeps the roles about supply: partner, buyer, the SNS's
-    // channel, or the source of a PPE directive.
-    { k:'hdp',label:'Health department mentioned (580)',
-                                                color:'var(--muted)'    },
-    { k:'hdx',label:'… as partner, buyer, SNS channel or PPE directive (60)',
-                                                color:'var(--good)'     },
-    { k:'n95',label:'N95 respirators (50)',     color:'var(--series-1)'},
+    { g:'topic', k:'p',   label:'PPE',
+      hint:'Uses the phrase "personal protective equipment" (or PPE where the phrase also appears).' },
+    { g:'topic', k:'v',   label:'Antivirals',
+      hint:'Mentions antiviral drugs.' },
+    { g:'topic', k:'n95', label:'N95 or another named respirator',
+      hint:'Names a respirator class: N95, KN95, FFP2, P100 and similar.' },
+
+    { g:'staff', k:'bpp', label:'Provides PPE to its own staff',
+      hint:'The company says it provides PPE to its employees; the purchase is inferred from that.' },
+    { g:'staff', k:'hc',  label:'Has a human capital section',
+      hint:'The Regulation S-K Item 101 workforce disclosure, required in 10-Ks since November 2020.' },
+    { g:'staff', k:'hcp', label:'PPE in the human capital section',
+      hint:'PPE is mentioned inside that workforce section.' },
+    { g:'staff', k:'hpe', sub:1, label:'for an emergency (pandemic, disease, disaster)',
+      hint:'The PPE sentence names a pandemic, infectious disease or natural disaster.' },
+    { g:'staff', k:'hpo', sub:1, label:'for everyday job safety',
+      hint:'The PPE sentence is about ordinary workplace hazards.' },
+    { g:'staff', k:'hpr', sub:1, label:'with a plan or supply in place beforehand',
+      hint:'A pandemic plan that existed before COVID, or a standing supply of PPE.' },
+    { g:'staff', k:'pw',  label:'Ties PPE to emergency preparedness',
+      hint:'A preparedness activity (business continuity, pandemic planning) linked to PPE for staff.' },
+    { g:'staff', k:'pk',  label:'Preparedness, checked by hand',
+      hint:'Forward-looking PPE supply action or risk, confirmed by reading.' },
+    { g:'staff', k:'bs',  label:'Holds a stock of PPE for staff',
+      hint:'A company that only buys PPE describing a stock of it. Checked by hand.' },
+
+    { g:'stock', k:'st',  label:'Stockpile of PPE or medical supplies',
+      hint:'Stockpile language about protective equipment, drugs, vaccines or medical supplies (not ore, grain or parts).' },
+    { g:'stock', k:'ps',  label:'PPE near stockpile language',
+      hint:'Candidates: a stockpile word within reach of a PPE mention. Not checked.' },
+    { g:'stock', k:'vs',  label:'Antivirals near stockpile language',
+      hint:'Candidates: a stockpile word within reach of an antiviral mention. Not checked.' },
+    { g:'stock', k:'sda', label:'Stockpiling by an unnamed private buyer',
+      hint:'A supplier reports that private customers stockpiled, without naming them.' },
+    { g:'stock', k:'mst', label:'PPE maker holds its own stockpile',
+      hint:'A PPE manufacturer keeping finished goods back for surges.' },
+
+    { g:'inc',   k:'ver', label:'Verified incentive',
+      hint:'An incentive passage confirmed by reading.' },
+    { g:'inc',   k:'min', label:'Incentive paid to a PPE maker',
+      hint:'An outside party funds a maker’s capacity or its customers’ purchases.' },
+    { g:'inc',   k:'pi',  label:'PPE near incentive language',
+      hint:'Candidates: an incentive term within 150 characters of a PPE mention. Not checked.' },
+    { g:'inc',   k:'vi',  label:'Antivirals near incentive language',
+      hint:'Candidates: an incentive term within 150 characters of an antiviral mention. Not checked.' },
+
+    { g:'gov',   k:'snp', label:'Strategic National Stockpile',
+      hint:'Names the federal SNS. Nearly every such company is a supplier to it.' },
+    { g:'gov',   k:'hdp', label:'Health department',
+      hint:'Names a state or local health department (not the federal HHS).' },
+    { g:'gov',   k:'hdx', sub:1, label:'as partner, buyer, SNS channel or PPE directive',
+      hint:'The health department’s role is about supply, not licensing or general COVID guidance.' },
   ];
   // What the stockpile is of. The flag tests only for the word, so the
   // subject is the difference between a pandemic stock and a heap of sand.
@@ -714,15 +834,27 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
   D.forEach(r => { if (!byAcc.has(r.a)) byAcc.set(r.a, r); });
 
   // ---- filter controls -------------------------------------------------
-  $('cats').innerHTML = CATS.map(c =>
-    `<label class="cat" data-on="0" data-k="${c.k}">
-       <input type="checkbox" value="${c.k}">
-       <i class="dot" style="background:${c.color}"></i>${c.label}</label>`).join('');
+  const catLabel = k => {
+    const c = CATS.find(x => x.k === k);
+    if (!c) return k;
+    if (!c.sub) return c.label;
+    const parent = CATS.slice(0, CATS.indexOf(c)).reverse().find(x => !x.sub && x.g === c.g);
+    return parent ? `${parent.label} — ${c.label}` : c.label;
+  };
+  $('cats').innerHTML = GROUPS.map(g => `
+    <details class="cg" data-g="${g.id}"${g.open ? ' open' : ''}>
+      <summary>${g.t}<span class="badge" data-gb="${g.id}"></span></summary>
+      <div class="gd">${g.d}</div>
+      ${CATS.filter(c => c.g === g.id).map(c => `
+        <label class="ci${c.sub ? ' sub' : ''}" data-on="0" data-k="${c.k}" title="${esc(c.hint)}">
+          <input type="checkbox" value="${c.k}">
+          <span>${c.label}</span><span class="n" data-n="${c.k}"></span>
+        </label>`).join('')}
+    </details>`).join('');
   $('cats').addEventListener('change', e => {
     const k = e.target.value;
     e.target.checked ? state.cats.add(k) : state.cats.delete(k);
-    e.target.closest('.cat').dataset.on = e.target.checked ? '1' : '0';
-    state.limit = 100; render();
+    state.limit = 100; sync(); render();
   });
 
   // Sector first, then the fine-grained code. 309 SIC codes is an unreadable
@@ -777,7 +909,9 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
 
   const band = r => r.y <= 2010 ? '2000-2010' : r.y <= 2019 ? '2011-2019' : '2020-2026';
 
-  function matches(r) {
+  // `skipCats` lets the sidebar count what each category would hold under
+  // every other filter, without the category ticks themselves.
+  function matches(r, skipCats) {
     // Applied before everything else, including the category toggles.
     if (state.pharma === 'exclude' && r.ph) return false;
     if (state.pharma === 'only' && !r.ph) return false;
@@ -806,7 +940,7 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
     if (state.sic && r.s !== state.sic) return false;
     // "all" is an intersection across categories, which is how you find the
     // documents that sit in two of them at once - usually very few.
-    if (state.cats.size) {
+    if (state.cats.size && !skipCats) {
       const sel = [...state.cats];
       const ok = state.catMode === 'all' ? sel.every(k => r[k]) : sel.some(k => r[k]);
       if (!ok) return false;
@@ -834,20 +968,18 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
   function tiles(rows) {
     const u = state.unit;
     const uname = { doc:'documents', filing:'filings', company:'companies' }[u];
+    // Four, not eight: the incentive and stockpile candidate counts these
+    // used to repeat are categories in the sidebar, with live counts there.
     const t = [
       { v:countBy(rows, u), l:'Matching ' + uname, s:`of ${countBy(D, u).toLocaleString()} total`, hl:1 },
-      { v:countBy(rows.filter(r => r.p), u),  l:'PPE mentioned' },
-      { v:countBy(rows.filter(r => r.v), u),  l:'Antivirals mentioned' },
-      { v:countBy(rows.filter(r => r.pi), u), l:'PPE + incentives', s:'candidates' },
-      { v:countBy(rows.filter(r => r.vi), u), l:'Antivirals + incentives', s:'candidates' },
-      { v:countBy(rows.filter(r => r.ps), u), l:'PPE + stockpiling', s:'candidates' },
-      { v:countBy(rows.filter(r => r.vs), u), l:'Antivirals + stockpiling', s:'candidates' },
+      { v:countBy(rows.filter(r => r.p), u),  l:'Mention PPE' },
+      { v:countBy(rows.filter(r => r.v), u),  l:'Mention antivirals' },
       // Union of the topic-linked and document-level kinds. SIGA's private
       // passage names ST-246 rather than "antiviral", so topic-linking alone
       // would class it government and lose the clearest finding in the corpus.
       { v:countBy(rows.filter(r => r.psk === 'private' || r.vsk === 'private'
                                || r.sk === 'private'), u),
-        l:'Private-sector stockpile', s:'the research target' },
+        l:'Mention a private-sector stockpile', s:'the research target' },
     ];
     $('tiles').innerHTML = t.map(x =>
       `<div class="tile${x.hl ? ' hl' : ''}"><div class="v">${x.v.toLocaleString()}</div>
@@ -984,48 +1116,90 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
     return `<div class="tags">${h || '<span class="tag">—</span>'}</div>`;
   }
 
+  // Live counts beside each category: what it holds under every other
+  // filter. A zero greys the item rather than hiding it, so the list never
+  // reshuffles under the cursor.
+  function catCounts() {
+    const base = D.filter(r => matches(r, true));
+    CATS.forEach(c => {
+      const n = countBy(base.filter(r => r[c.k]), state.unit);
+      const el = document.querySelector(`[data-n="${c.k}"]`);
+      el.textContent = n.toLocaleString();
+      el.closest('.ci').classList.toggle('zero', n === 0);
+    });
+    GROUPS.forEach(g => {
+      const n = CATS.filter(c => c.g === g.id && state.cats.has(c.k)).length;
+      document.querySelector(`[data-gb="${g.id}"]`).textContent = n || '';
+    });
+    const sec = {
+      time: [state.band !== 'all', state.pharma !== 'all', state.sector, state.sic, state.grp],
+      ppe: [state.pr, state.ctx, state.prb],
+      stock: [state.ssu, state.sho],
+    };
+    Object.entries(sec).forEach(([k, v]) => {
+      const n = v.filter(Boolean).length;
+      document.querySelector(`[data-sec="${k}"]`).textContent = n || '';
+    });
+  }
+
   function render() {
-    const rows = D.filter(matches);
+    const rows = D.filter(r => matches(r));
     tiles(rows);
+    catCounts();
     chart($('c1'), rows, ['p', 'v'], ['PPE', 'Antivirals']);
     chart($('c2'), rows, ['pi', 'vi'], ['PPE + incentives', 'Antivirals + incentives']);
 
-    const bits = [];
-    if (state.ftBusy) bits.push('searching full text…');
-    if (state.ft && state.ftErr) bits.push(`<span style="color:var(--critical)">${esc(state.ftErr)}</span>`);
-    if (state.q) bits.push(state.ft
-      ? `full text “${esc(state.q)}”` +
-        (state.ftExpanded && state.ftExpanded !== state.q
-          ? ` <span style="color:var(--muted)">(as ${esc(state.ftExpanded)})</span>` : '') +
-        (state.ftTotal != null ? ` — ${state.ftTotal.toLocaleString()} documents match` +
-          (state.ftTotal > 2000 ? ' (showing the top 2,000 by relevance)' : '') : '')
-      : `text “${esc(state.q)}”`);
-    if (state.cats.size) bits.push([...state.cats]
-      .map(k => CATS.find(c => c.k === k).label)
-      .join(state.catMode === 'all' ? ' AND ' : ' or '));
-    if (state.pharma === 'exclude') bits.push('pharma &amp; biotech excluded');
-    if (state.pharma === 'only') bits.push('pharma &amp; biotech only');
-    if (state.band !== 'all') bits.push(state.band);
-    if (state.grp) bits.push(esc(state.grp));
-    if (state.ctx) bits.push({ emergency:'emergency / pandemic context',
-      occupational:'occupational exposure context', both:'both contexts',
-      unclear:'no stated context' }[state.ctx]);
-    if (state.prb) bits.push('evidence: ' + esc(state.prb));
-    if (state.sho) bits.push(HOLD_LABEL[state.sho] || esc(state.sho));
-    if (state.ssu) bits.push(state.ssu === 'cm'
-      ? 'stockpiling countermeasures or prophylaxis'
-      : 'stockpiling ' + SUBJ_LABEL[state.ssu]);
-    if (state.pr) bits.push({
-      maker:'this filing: makes or sells PPE', buyer:'this filing: buys PPE for staff',
-      both:'this filing: both maker and buyer', unclear:'this filing: PPE role unclear',
-      regulatory:'this filing: regulatory mention only',
-      'co:buyer only':'company never makes PPE',
-      'co:maker or both':'company makes or sells PPE' }[state.pr]);
-    if (state.sector) bits.push(esc(state.sector));
-    if (state.sic) bits.push(esc(sicName(state.sic)) + ' (SIC ' + state.sic + ')');
-    $('activeNote').innerHTML = bits.length
-      ? 'Filtered by ' + bits.map(b => `<strong>${b}</strong>`).join(' · ')
-      : 'No filters — showing everything. Charts and tiles follow the filters.';
+    // Every active filter as a chip that removes itself. Full-text status
+    // (searching, errors, the expanded query) is text beside them.
+    const chips = [];
+    const status = [];
+    if (state.ftBusy) status.push('searching full text…');
+    if (state.ft && state.ftErr) status.push(`<span style="color:var(--critical)">${esc(state.ftErr)}</span>`);
+    if (state.q) chips.push([state.ft
+      ? `Full text: “${esc(state.q)}”` +
+        (state.ftExpanded && state.ftExpanded !== state.q ? ` (as ${esc(state.ftExpanded)})` : '') +
+        (state.ftTotal != null ? ` — ${state.ftTotal.toLocaleString()} match` +
+          (state.ftTotal > 2000 ? ', top 2,000 shown' : '') : '')
+      : `Search: “${esc(state.q)}”`,
+      () => { state.q = ''; state.ftHits = null; state.ftMeta = null; state.ftTotal = null; }]);
+    const join = state.cats.size > 1 ? (state.catMode === 'all' ? ' AND ' : ' OR ') : '';
+    [...state.cats].forEach((k, i) => chips.push([(i ? `<span class="lite">${join.trim()}</span> ` : '') +
+      esc(catLabel(k)), () => state.cats.delete(k)]));
+    if (state.band !== 'all') chips.push(['Filed ' + state.band.replace('2000-', '2001–').replace('-', '–'),
+      () => { state.band = 'all'; }]);
+    if (state.pharma === 'exclude') chips.push(['Pharma &amp; biotech excluded', () => { state.pharma = 'all'; }]);
+    if (state.pharma === 'only') chips.push(['Pharma &amp; biotech only', () => { state.pharma = 'all'; }]);
+    if (state.sector) chips.push(['Sector: ' + esc(state.sector), () => { state.sector = ''; state.sic = ''; }]);
+    if (state.sic) chips.push([esc(sicName(state.sic)) + ' (SIC ' + state.sic + ')', () => { state.sic = ''; }]);
+    if (state.grp) chips.push(['Supply chain: ' + esc(state.grp), () => { state.grp = ''; }]);
+    if (state.pr) chips.push([{
+      maker:'Makes or sells PPE (this filing)', buyer:'Buys PPE for staff (this filing)',
+      both:'Makes and buys PPE (this filing)', unclear:'PPE role unclear',
+      regulatory:'PPE as regulation only',
+      'co:buyer only':'Company never makes PPE',
+      'co:maker or both':'Company makes or sells PPE' }[state.pr], () => { state.pr = ''; }]);
+    if (state.ctx) chips.push([{ emergency:'PPE context: emergency',
+      occupational:'PPE context: workplace hazards', both:'PPE context: both',
+      unclear:'PPE context: none stated' }[state.ctx], () => { state.ctx = ''; }]);
+    if (state.prb) chips.push(['Evidence: ' + esc(state.prb), () => { state.prb = ''; }]);
+    if (state.ssu) chips.push([state.ssu === 'cm'
+      ? 'Stockpile of countermeasures'
+      : 'Stockpile of ' + SUBJ_LABEL[state.ssu], () => { state.ssu = ''; }]);
+    if (state.sho) chips.push(['Stockpile ' + (HOLD_LABEL[state.sho] || esc(state.sho)),
+      () => { state.sho = ''; }]);
+    $('active').innerHTML = (chips.length
+      ? chips.map(([t], i) => `<span class="chipx">${t}<button type="button" data-x="${i}"
+          aria-label="Remove this filter" title="Remove">×</button></span>`).join('') +
+        (chips.length > 1 ? '<button class="link" type="button" data-x="all">Clear all</button>' : '')
+      : '<span>No filters. Showing every document; the charts and counts follow your filters.</span>') +
+      (status.length ? ` <span>${status.join(' · ')}</span>` : '');
+    $('active').querySelectorAll('[data-x]').forEach(b => b.onclick = () => {
+      if (b.dataset.x === 'all') return resetAll();
+      chips[+b.dataset.x][1]();
+      state.limit = 100; sync();
+      if (state.ft && state.q) runFullText(); else render();
+    });
+    $('nActive').textContent = chips.length || '';
 
     const dir = state.dir, k = state.sort;
     rows.sort((a, b) => {
@@ -1206,16 +1380,41 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
     $('ftWrap').style.display = '';
     $('ft').onchange = e => {
       state.ft = e.target.checked;
-      $('ftWrap').dataset.on = e.target.checked ? '1' : '0';
       $('scope').textContent = state.ft
-        ? 'the full text of every filing'
-        : 'company, CIK or extracted passages';
+        ? 'Searches the full text of every filing. Quotes, OR, NOT and NEAR() work.'
+        : 'Searches company names, CIKs and the extracted passages.';
       state.limit = 100;
       state.ft ? runFullText() : render();
     };
   }).catch(() => {});
 
   // ---- wiring ----------------------------------------------------------
+  // One source of truth: controls are drawn from `state` by sync(), and
+  // every change goes state -> sync() -> render(). That is what lets a chip,
+  // "Clear all" and the controls all stay in step.
+  const SELECTS = ['sector', 'sic', 'grp', 'pr', 'prb', 'ctx', 'ssu', 'sho'];
+  function sync() {
+    $('q').value = state.q;
+    SELECTS.forEach(id => { $(id).value = state[id]; });
+    document.querySelectorAll('.seg[data-key]').forEach(seg => {
+      seg.querySelectorAll('button').forEach(b =>
+        b.setAttribute('aria-pressed', String(state[seg.dataset.key] === b.dataset.v)));
+    });
+    document.querySelectorAll('.ci').forEach(el => {
+      const on = state.cats.has(el.dataset.k);
+      el.querySelector('input').checked = on;
+      el.dataset.on = on ? '1' : '0';
+    });
+  }
+
+  function resetAll() {
+    Object.assign(state, { q:'', catMode:'any', band:'all', sic:'', sector:'',
+      grp:'', pr:'', prb:'', ctx:'', ssu:'', sho:'', pharma:'all', limit:100,
+      ftHits:null, ftMeta:null, ftErr:null, ftTotal:null });
+    state.cats.clear();
+    fillSics(); sync(); render();
+  }
+
   let timer;
   $('q').oninput = e => {
     clearTimeout(timer);
@@ -1224,40 +1423,31 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
       state.ft ? runFullText() : render();
     }, 260);
   };
-  $('band').onchange = e => { state.band = e.target.value; state.limit = 100; render(); };
-  $('sic').onchange  = e => { state.sic  = e.target.value; state.limit = 100; render(); };
-  $('grp').onchange = e => { state.grp = e.target.value; state.limit = 100; render(); };
-  $('pr').onchange  = e => { state.pr  = e.target.value; state.limit = 100; render(); };
-  $('prb').onchange = e => { state.prb = e.target.value; state.limit = 100; render(); };
-  $('ssu').onchange = e => { state.ssu = e.target.value; state.limit = 100; render(); };
-  $('sho').onchange = e => { state.sho = e.target.value; state.limit = 100; render(); };
-  $('ctx').onchange = e => { state.ctx = e.target.value; state.limit = 100; render(); };
-  $('catmode').onchange = e => {
-    state.catMode = e.target.value; state.limit = 100; render();
-  };
-  $('sector').onchange = e => {
-    state.sector = e.target.value; state.limit = 100; fillSics(); render();
-  };
-  $('pharma').onchange = e => { state.pharma = e.target.value; state.limit = 100; render(); };
-  $('unit').onchange = e => { state.unit = e.target.value; render(); };
-  $('reset').onclick = () => {
-    state.q = ''; state.cats.clear(); state.catMode = 'any';
-    state.band = 'all'; state.sic = '';
-    state.sector = ''; state.grp = ''; state.pr = ''; state.prb = ''; state.ctx = '';
-    state.ssu = ''; state.sho = '';
-    state.limit = 100;
-    state.ftHits = null; state.ftMeta = null; state.ftErr = null; state.ftTotal = null;
-    state.pharma = 'all';
-    $('q').value = ''; $('band').value = 'all'; $('sector').value = '';
-    $('grp').value = ''; $('pr').value = ''; $('prb').value = '';
-    $('ssu').value = ''; $('sho').value = '';
-    $('ctx').value = ''; $('catmode').value = 'any'; fillSics();
-    $('pharma').value = 'all';
-    document.querySelectorAll('.cat input').forEach(i => {
-      i.checked = false; i.closest('.cat').dataset.on = '0';
+  SELECTS.forEach(id => {
+    $(id).onchange = e => {
+      state[id] = e.target.value; state.limit = 100;
+      if (id === 'sector') fillSics();
+      render();
+    };
+  });
+  document.querySelectorAll('.seg[data-key]').forEach(seg => {
+    seg.addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      state[seg.dataset.key] = b.dataset.v;
+      if (seg.dataset.key !== 'unit') state.limit = 100;
+      sync(); render();
     });
-    render();
-  };
+  });
+  $('reset').onclick = resetAll;
+
+  // Narrow screens: the sidebar slides in over the results.
+  const side = $('side'), scrim = $('scrim');
+  const openSide = on => { side.classList.toggle('open', on); scrim.classList.toggle('open', on); };
+  $('openSide').onclick = () => openSide(true);
+  $('closeSide').onclick = () => openSide(false);
+  scrim.onclick = () => openSide(false);
+
   $('theme').onclick = () => {
     const dark = document.documentElement.dataset.theme === 'dark';
     document.documentElement.dataset.theme = dark ? 'light' : 'dark';
@@ -1272,6 +1462,7 @@ footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--border);
     };
   });
 
+  sync();
   render();
 })();
 </script>
