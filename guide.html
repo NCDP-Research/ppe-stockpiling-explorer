@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Explorer guide — PPE &amp; antiviral stockpiling incentives</title>
+<title>Documentation — PPE &amp; antiviral stockpiling incentives</title>
 <style>
 :root {
   color-scheme: light;
@@ -85,6 +85,9 @@ td .sub { padding-left:16px; display:block; }
 dl { margin:8px 0; }
 dt { font-weight:650; margin-top:12px; }
 dd { margin:2px 0 0; color:var(--text-secondary); }
+.hbtns { display:flex; gap:8px; flex-wrap:wrap; }
+.btn.ghost { background:transparent; color:var(--text-primary); border:1px solid var(--axis); }
+.btn.ghost:hover { background:var(--chip); }
 footer { font-size:13px; color:var(--muted); margin-top:48px; padding-top:16px; border-top:1px solid var(--border); }
 @media (max-width:860px) {
   .wrap { grid-template-columns:1fr; gap:10px; padding:20px 16px 60px; }
@@ -97,10 +100,13 @@ footer { font-size:13px; color:var(--muted); margin-top:48px; padding-top:16px; 
 <body>
 <header>
   <div>
-    <h1>Explorer guide</h1>
-    <div class="sub">PPE &amp; antiviral stockpiling incentives — EDGAR 10-K explorer</div>
+    <h1>Documentation</h1>
+    <div class="sub">How to use the PPE &amp; antiviral stockpiling incentives explorer</div>
   </div>
-  <a class="btn" href="./">Open the explorer →</a>
+  <nav class="hbtns" aria-label="Pages">
+    <a class="btn ghost" href="insights.html">Insights</a>
+    <a class="btn" href="./">Open the explorer →</a>
+  </nav>
 </header>
 
 <div class="wrap">
@@ -134,7 +140,8 @@ footer { font-size:13px; color:var(--muted); margin-top:48px; padding-top:16px; 
       <div class="stat"><div class="v">2001–2026</div><div class="l">filing years</div></div>
       <div class="stat"><div class="v">24</div><div class="l">categories</div></div>
     </div>
-    <p class="muted" style="font-size:13.5px">Counts in this guide are as of 24 November 2026.</p>
+    <p class="muted" style="font-size:13.5px">Counts on this page are as of 24 November 2026. For what the
+      data shows and how each category was decided, see <a href="insights.html">Insights</a>.</p>
 
     <h2 id="start">Quick start</h2>
     <ol class="steps">
@@ -180,7 +187,9 @@ footer { font-size:13px; color:var(--muted); margin-top:48px; padding-top:16px; 
       <code>Lakeland</code>, <code>798081</code>, <code>stockpile</code> or <code>their employees</code>.</p>
     <p class="muted">When the explorer is run locally with its search server, a checkbox appears to search the
       full text of every filing instead. Quoted phrases, <code>OR</code>, <code>NOT</code> and
-      <code>NEAR(word1 word2, 10)</code> work there. This is not available on the public website.</p>
+      <code>NEAR(word1 word2, 10)</code> work there, hyphens and line breaks are handled (so a quoted phrase
+      still matches text wrapped across lines), and the other filters still narrow the results. This is not
+      available on the public website.</p>
 
     <h3>Time and companies</h3>
     <table class="tbl">
@@ -429,7 +438,7 @@ footer { font-size:13px; color:var(--muted); margin-top:48px; padding-top:16px; 
 
     <footer>
       Built by the National Center for Disaster Preparedness, Columbia Climate School, from SEC EDGAR filings.
-      Guide updated 24 November 2026.
+      Documentation updated 26 November 2026.
     </footer>
   </article>
 </div>

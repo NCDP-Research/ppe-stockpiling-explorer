@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Insights — PPE &amp; antiviral stockpiling incentives</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface-1:#fcfcfb; --page:#f9f9f7;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+  --series-1:#2a78d6; --good:#0ca30c; --critical:#d03b3b; --chip:#f0efec;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --surface-1:#1a1a19; --page:#0d0d0d;
+    --text-primary:#f0efec; --text-secondary:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+    --series-1:#5b9ef0; --chip:#2c2c2a;
+  }
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:16px; }
+body { margin:0; background:var(--page); color:var(--text-primary);
+  font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif; }
+a { color:var(--series-1); }
+header { background:var(--surface-1); border-bottom:1px solid var(--border);
+  padding:18px 24px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+header h1 { margin:0; font-size:19px; font-weight:650; letter-spacing:-.01em; }
+header .sub { color:var(--text-secondary); font-size:13px; }
+.btn { display:inline-block; font-size:13.5px; font-weight:600; text-decoration:none;
+  background:var(--text-primary); color:var(--surface-1); padding:8px 14px; border-radius:7px; }
+.wrap { display:grid; grid-template-columns:230px minmax(0,1fr); gap:40px;
+  max-width:1120px; margin:0 auto; padding:28px 24px 80px; }
+nav.toc { position:sticky; top:16px; align-self:start; font-size:13.5px; }
+nav.toc b { display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--muted); margin-bottom:8px; }
+nav.toc a { display:block; color:var(--text-secondary); text-decoration:none; padding:4px 0 4px 10px;
+  border-left:2px solid var(--grid); }
+nav.toc a:hover { color:var(--text-primary); border-left-color:var(--series-1); }
+article { max-width:760px; min-width:0; }
+h2 { font-size:21px; font-weight:650; letter-spacing:-.01em; margin:44px 0 10px;
+  padding-top:6px; border-top:1px solid var(--border); }
+h2:first-of-type { margin-top:0; border-top:none; padding-top:0; }
+h3 { font-size:15.5px; font-weight:650; margin:26px 0 6px; }
+p, li { color:var(--text-primary); }
+.lead { font-size:17px; line-height:1.6; color:var(--text-secondary); margin:0 0 18px; }
+.muted { color:var(--text-secondary); }
+code, kbd { font:13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  background:var(--chip); padding:1px 5px; border-radius:4px; }
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:18px 0 6px; }
+.stat { background:var(--surface-1); border:1px solid var(--border); border-radius:9px; padding:10px 14px; }
+.stat .v { font-size:22px; font-weight:650; font-variant-numeric:tabular-nums; }
+.stat .l { font-size:12px; color:var(--text-secondary); }
+ol.steps { padding-left:0; list-style:none; counter-reset:s; }
+ol.steps li { counter-increment:s; position:relative; padding:0 0 12px 40px; }
+ol.steps li::before { content:counter(s); position:absolute; left:0; top:1px; width:26px; height:26px;
+  border-radius:50%; background:var(--text-primary); color:var(--surface-1); font-size:13px;
+  font-weight:650; display:grid; place-items:center; }
+table { width:100%; border-collapse:collapse; font-size:14px; margin:10px 0 6px;
+  background:var(--surface-1); border:1px solid var(--border); border-radius:9px; overflow:hidden; }
+th { text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--text-secondary); padding:9px 12px; border-bottom:1px solid var(--border); }
+td { padding:9px 12px; border-bottom:1px solid var(--grid); vertical-align:top; }
+tr:last-child td { border-bottom:none; }
+td.n { font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap; color:var(--text-secondary); }
+td .sub { padding-left:16px; display:block; }
+.tbl { overflow-x:auto; }
+.ui { display:inline-block; font-size:13px; font-weight:600; border:1px solid var(--axis);
+  border-radius:6px; padding:0 7px; background:var(--surface-1); white-space:nowrap; }
+.tag { display:inline-block; font-size:11.5px; padding:1px 8px; border-radius:999px;
+  border:1px solid var(--border); color:var(--text-secondary); white-space:nowrap; }
+.tag.ver { border-color:var(--good); color:var(--good); font-weight:600; }
+.tag.priv { border-color:var(--critical); color:var(--critical); font-weight:600; }
+.chk { display:inline-block; font-size:11.5px; font-weight:650; color:var(--good); white-space:nowrap; }
+.note { background:var(--surface-1); border:1px solid var(--border); border-left:3px solid var(--series-1);
+  border-radius:8px; padding:12px 16px; margin:16px 0; font-size:14px; }
+.note.warn { border-left-color:var(--critical); }
+.recipe { background:var(--surface-1); border:1px solid var(--border); border-radius:9px;
+  padding:12px 16px; margin:12px 0; }
+.recipe h3 { margin:0 0 4px; font-size:15px; }
+.recipe p { margin:4px 0 0; font-size:14px; }
+dl { margin:8px 0; }
+dt { font-weight:650; margin-top:12px; }
+dd { margin:2px 0 0; color:var(--text-secondary); }
+footer { font-size:13px; color:var(--muted); margin-top:48px; padding-top:16px; border-top:1px solid var(--border); }
+@media (max-width:860px) {
+  .wrap { grid-template-columns:1fr; gap:10px; padding:20px 16px 60px; }
+  nav.toc { position:static; columns:2; column-gap:16px; margin-bottom:12px; }
+  .stats { grid-template-columns:repeat(2,1fr); }
+  header { padding:14px 16px; }
+}
+.hbtns { display:flex; gap:8px; flex-wrap:wrap; }
+.btn.ghost { background:transparent; color:var(--text-primary); border:1px solid var(--axis); }
+.btn.ghost:hover { background:var(--chip); }
+.see { font-size:13.5px; color:var(--text-secondary); background:var(--surface-1);
+  border:1px solid var(--border); border-radius:8px; padding:8px 12px; }
+h2.part { margin-top:56px; border-top:2px solid var(--text-primary); }
+nav.toc b + a { margin-top:0; }
+</style>
+
+</head>
+<body>
+<header>
+  <div>
+    <h1>Insights</h1>
+    <div class="sub">What the filings show — PPE &amp; antiviral stockpiling incentives</div>
+  </div>
+  <nav class="hbtns" aria-label="Pages">
+    <a class="btn ghost" href="guide.html">Documentation</a>
+    <a class="btn" href="./">Open the explorer →</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Contents">
+    <b>Findings</b>
+    <a href="#ladder">Provision is common; stocks are rare</a>
+    <a href="#rule">Why it is post-2020</a>
+    <a href="#emergency">Emergency or the day job</a>
+    <a href="#holders">Nobody stockpiles as preparedness</a>
+    <a href="#makers">The supply side</a>
+    <a href="#sns">The SNS and its vendors</a>
+    <a href="#health">Health departments</a>
+    <b style="margin-top:18px">How it was built</b>
+    <a href="#m-ppe">What counts as PPE</a>
+    <a href="#m-role">PPE role and evidence</a>
+    <a href="#m-chain">Supply-chain role</a>
+    <a href="#m-context">PPE context and preparedness</a>
+    <a href="#m-stockpile">The stockpile category</a>
+    <a href="#m-incentives">Incentive candidates</a>
+    <a href="#m-other">Pharma and industries</a>
+  </nav>
+
+  <article>
+    <p class="lead">The research question is what incentives could encourage private companies to stockpile
+      protective equipment and antivirals. This page sets out what 4,121 annual reports from 1,483 companies
+      say about it, and how each category in the explorer was decided.</p>
+    <p class="muted" style="font-size:13.5px">Figures as of 26 November 2026. Every finding can be reproduced in
+      the explorer with the category named beside it.</p>
+
+    <h2 id="ladder">Provision is common; stocks are rare</h2>
+    <p><strong>1,057 companies tell the SEC they provide protective equipment to their own people</strong> —
+      nearly every large employer in the collection, most arriving after 2020. Almost none writes “we purchased
+      PPE”; they write that they <em>provided</em> it to employees, and the purchase is read from that. The
+      answer to the research question is what happens to that number as you ask more of it:</p>
+    <div class="tbl"><table>
+      <tr><th>Companies that…</th><th style="text-align:right">Companies</th></tr>
+      <tr><td>Mention PPE at all</td><td class="n">1,307</td></tr>
+      <tr><td><strong>Say they provide PPE to their own staff</strong></td><td class="n"><strong>1,057</strong></td></tr>
+      <tr><td>Tie a preparedness activity to that gear</td><td class="n">47</td></tr>
+      <tr><td>Describe holding a stock of it for staff</td><td class="n">8</td></tr>
+      <tr><td>Act on PPE supply against a <em>future</em> event</td><td class="n">4</td></tr>
+      <tr><td>Carry a hand-verified incentive passage</td><td class="n">9</td></tr>
+    </table></div>
+    <p>The rungs are separate questions on purpose, and the gaps between them are the finding. Provision is not
+      a stock: FedEx’s <em>“Providing gloves, masks and other personal protective equipment … to our team
+      members”</em> makes it one of the 1,057 and none of the 8 — across three filings it never describes keeping
+      a supply. A stock is not preparedness, and preparedness is not an incentive. Collapsing any two of these
+      rungs would make the top number the answer to every question, which is how a keyword search gets this
+      wrong.</p>
+    <p class="see">In the explorer: <span class="ui">Provides PPE to its own staff</span>,
+      <span class="ui">Ties PPE to emergency preparedness</span>, <span class="ui">Holds a stock of PPE for
+      staff</span>, <span class="ui">Verified incentive</span>.</p>
+
+    <h2 id="rule">Why the demand side is post-2020: the human capital rule</h2>
+    <p>Since 9 November 2020, Regulation S-K Item 101(c)(2)(ii) has required every 10-K to describe the company’s
+      human capital resources; before that it asked only for a headcount. 88% of the companies whose 10-Ks fall
+      under the rule carry the section — 96% of those that are not smaller reporting companies, which may give a
+      headcount only.</p>
+    <p>It is where the provision of PPE gets said. Of the 1,926 post-rule 10-Ks in which the filer says it provides
+      PPE to its staff, <strong>917 say it inside the human capital section</strong>, and 632 nowhere else. The
+      demand side did not appear because employers started buying PPE in 2020; it appeared because the SEC
+      started asking where they would say so.</p>
+    <p class="see">In the explorer: <span class="ui">PPE in the human capital section</span>.</p>
+
+    <h2 id="emergency">Emergency or the day job?</h2>
+    <p>Each PPE sentence in the human capital section is read with its context — the sentence before it and, for
+      a bulleted measure, the line introducing the list — and tagged. <strong>851 documents (477 companies)</strong>
+      tie the PPE to a named emergency; <strong>325 (133)</strong> to ordinary on-the-job safety; a document can
+      be both.</p>
+    <p>The emergency is almost always COVID-19. Natural disasters appear twice — Hanmi’s <em>“response to the
+      pandemic as well as the recent Southern California wildfires”</em>, and Etsy’s disaster-relief giving — and
+      zoonotic disease never. 83% of the emergency mentions were filed in 2021–22.</p>
+    <p>Only <strong>15 documents from 11 companies</strong> show preparedness rather than response: a plan that
+      existed before the pandemic (Kroger <em>“activated our Pandemic Preparedness Plan”</em>, Xerox, Eversource,
+      Pacific Premier, and several business continuity plans) or a standing supply (Tenet and Ardent
+      <em>“maintain availability of personal protective equipment”</em> under infection-prevention
+      protocols).</p>
+    <p class="see">In the explorer: <span class="ui">for an emergency</span>, <span class="ui">for everyday job
+      safety</span>, <span class="ui">with a plan or supply in place beforehand</span>.</p>
+
+    <h2 id="holders">No company describes a stockpile held as preparedness</h2>
+    <p>The stockpile category asks a question the word cannot: <em>whose stock is it?</em> A supplier names a
+      stockpile on every other page and holds none of them — Emergent BioSolutions writes the word 121 times across
+      sixteen filings, and every one is the Strategic National Stockpile, which it sells into under contract.</p>
+    <div class="tbl"><table>
+      <tr><th>Of the 251 stockpile documents, the stockpile belongs to…</th><th style="text-align:right">Documents</th></tr>
+      <tr><td>A government</td><td class="n">201</td></tr>
+      <tr><td>Nobody named</td><td class="n">23</td></tr>
+      <tr><td>The company’s customers</td><td class="n">16</td></tr>
+      <tr><td>The company itself — all ten as goods held to sell</td><td class="n">10</td></tr>
+      <tr><td>Other private companies (a forecast)</td><td class="n">1</td></tr>
+    </table></div>
+    <p>The ten self-held stocks are Alpha Pro Tech’s <em>“from time to time, we will stockpile inventory for
+      periods of unusually high demand”</em>, Dermata’s freshwater sponge, Verve’s raw materials and Lakeland’s
+      2016 stock built <em>“for quick delivery”</em>. The single “other private companies” document is Lakeland
+      2021: <em>“we believe the private sector will also engage in stockpiling of PPE”</em> — a manufacturer’s market
+      forecast, not a disclosure that anyone holds anything.</p>
+    <p>So <strong>not one document in this category is a company holding PPE or countermeasures as
+      preparedness</strong>. That is a finding, not a gap in the rule: employers who do hold such stock describe it
+      as a <em>supply</em> or <em>inventory</em> they <em>maintain</em>, never as a stockpile. None of the ten
+      hand-verified workforce PPE stocks, and none of the 82 workforce-preparedness documents, contains the word
+      at all. Use those categories, not this one, to find companies that hold.</p>
+    <p>The only direct evidence that private stockpiling happened comes from suppliers: six documents in which
+      Owens &amp; Minor, Lakeland and Alpha Pro Tech report that private customers stockpiled — without naming
+      one.</p>
+    <p class="see">In the explorer: <span class="ui">Stockpile of PPE or medical supplies</span> with
+      <span class="ui">Whose stockpile it is</span>; <span class="ui">Stockpiling by an unnamed private
+      buyer</span>.</p>
+
+    <h2 id="makers">The supply side, asked separately</h2>
+    <p>Two categories look only at the 46 companies that make or sell PPE.</p>
+    <p><strong>PPE maker holds its own stockpile</strong> (7 filings, 2 companies) is the producer keeping finished
+      goods back against a surge, in the first person: Alpha Pro Tech, 2021–26, <em>“From time to time, we will
+      stockpile inventory for periods of unusually high demand”</em>, and Lakeland in 2016, which built <em>“a
+      strategic stockpile for quick delivery”</em> after Ebola emptied its shelves.</p>
+    <p><strong>Incentive paid to a PPE maker</strong> (28 filings, 6 companies) needs an outside payer: a Defense
+      Production Act award (Owens &amp; Minor), U.S. government co-funding of meltblown lines (Lydall), a purchaser
+      investing in a domestic manufacturer (Premier), or grants that pay the maker’s customers to buy — Fire Act,
+      Assistance to Firefighters, Homeland Security and bioterrorism grants (Lakeland, MSA, Versar). A company
+      retooling its own plant is a response, not an incentive, and is not counted.</p>
+    <p class="see">In the explorer: <span class="ui">PPE maker holds its own stockpile</span>,
+      <span class="ui">Incentive paid to a PPE maker</span>.</p>
+
+    <h2 id="sns">The Strategic National Stockpile is a federal programme, and its filers are its vendors</h2>
+    <p>133 documents from 21 companies name it. By each company’s strongest role: <strong>12 supply it</strong>
+      (an award, a delivery, a sale, a maintenance contract), 6 hope to, 3 name it only as context, and
+      <strong>none says it received anything from it</strong>.</p>
+    <p>16 of the 21 are pharma or biotech, and the subject is medical countermeasures in all but three documents —
+      Owens &amp; Minor’s Defense Production Act N95 contract (2021, 2022) and Agiliti’s maintenance of the SNS
+      cache of ventilators and powered air-purifying respirators (2022). It is not private stockpiling, but it shows
+      the market a federal stockpile creates for its suppliers — the incentive structure the private side
+      lacks.</p>
+    <p class="see">In the explorer: <span class="ui">Strategic National Stockpile</span>.</p>
+
+    <h2 id="health">Health departments: the SNS’s channel, and a source of orders rather than supplies</h2>
+    <p>580 documents from 248 companies name a state or local health department. Most are licensing and inspection
+      (274) or COVID-era guidance (54). <strong>60 documents from 28 companies</strong> show a role in supply:</p>
+    <ul>
+      <li><strong>Partners.</strong> La-Z-Boy <em>“partnered with local health departments to conduct drive-up
+        COVID-19 testing, distribution of … face coverings”</em>; CMS Energy, CoreCivic, Sanderson Farms.</li>
+      <li><strong>Buyers.</strong> Emergent’s NARCAN, OpGen’s tests, AdaptHealth’s ventilators, Exact Sciences’
+        testing.</li>
+      <li><strong>The SNS’s channel.</strong> SIGA, Emergent and Cleveland BioLabs describe the SNS as supplying
+        <em>“federal, state and local public health agencies”</em>.</li>
+      <li><strong>PPE directives.</strong> Employers’ PPE measures taken <em>“to comply with directives of state
+        and local health departments”</em> (First Commonwealth and 12 others).</li>
+    </ul>
+    <p><strong>No filer says it obtained PPE from a health department.</strong> In these filings the relationship
+      runs one way: health departments tell employers what to do, partner with them on testing and vaccination,
+      and buy from medical suppliers.</p>
+    <p class="see">In the explorer: <span class="ui">Health department</span> and <span class="ui">as partner,
+      buyer, SNS channel or PPE directive</span>.</p>
+
+    <h2 id="m-ppe" class="part">How it was built: what counts as PPE</h2>
+    <p><strong>An explicit mention.</strong> A filing counts as mentioning PPE only if it writes out “personal
+      protective equipment” (or “personal protection equipment”) somewhere. A bare <code>PPE</code> acronym does
+      not qualify on its own — in these filings it usually means <em>property, plant &amp; equipment</em> in a tax
+      or balance-sheet table. Once the phrase appears, later acronyms in the same filing are counted.</p>
+    <p><strong>Three kinds of protective equipment.</strong> The phrase is used by three unrelated product
+      families. Only one is in scope: masks, gloves, gowns, respirators and face shields. The other two are
+      <em>body armour</em> — ballistic plates, bullet- and blast-resistant gear, EOD suits, demining aprons — and
+      <em>motorsport impact gear</em> — helmets, neck braces, pads. A phrase match cannot tell them apart, so eight
+      companies spanning 41 documents are excluded from every count: NAPC Defense, American Defense Systems,
+      Safe Pro Group, HighCom Global Security (and BlastGard, the same filer), James Maritime (and Sentinel),
+      Force Protection, National Technical Systems, and Leatt. One of them, Safe Pro, had supplied a passage to
+      the verified incentive set, which is why that figure is 17 rather than 18.</p>
+
+    <h3 id="m-role">PPE role, and the evidence behind it</h3>
+    <p><strong>PPE role</strong> is behavioural: it reads each document for whether the filer describes
+      <em>making and selling</em> protective gear or <em>buying it for its own staff</em>, so it catches makers
+      that sit under a generic industry code. Only the 3,177 documents with an explicit PPE mention get a role.
+      Calling a filing a maker takes <strong>two or more</strong> supplier cues, not one — a single cue is usually
+      an accident of proximity (UPS <em>shipping</em> PPE out of Asia, a pesticide that <em>requires minimal</em>
+      PPE, a director’s biography naming a former employer). Buying is treated as weaker evidence than selling, so
+      a filing with both reads as <em>both</em>, never as a buyer.</p>
+    <p><strong>Evidence for the role</strong> says how each call was reached, strongest first: the filing
+      <em>states it provides PPE</em>; PPE appears in a list of COVID <em>safety measures</em>; it sits inside an
+      <em>EHS programme</em> alongside fall protection and machine guarding; it appears as a <em>cost line</em>,
+      a <em>supply risk</em>, or a <em>donation</em>.</p>
+    <p>Two bases are recorded but deliberately <strong>not</strong> counted as buying. <em>Regulatory only</em>
+      means the filing’s sole PPE sentence describes what the law requires — saying OSHA mandates PPE is not saying
+      you bought any. <em>Staff nearby</em> means PPE and a word like “employees” merely occur close together;
+      hand-checking seven of these found Nasdaq’s “the Staff will inform the Company”, a garment maker’s production
+      notes and a <em>hospital’s</em> PPE rather than the filer’s, so roughly three in seven were real buyers.
+      Both stay findable through the evidence filter.</p>
+
+    <h3 id="m-chain">Supply-chain role</h3>
+    <p>Structural rather than behavioural: it groups industry codes into medical device &amp; diagnostics makers,
+      medical supply distributors, healthcare providers, pharma &amp; biotech, and everyone else — the general
+      employers who buy PPE rather than sell it. There is deliberately <em>no</em> PPE-maker group. There used to
+      be, and it was wrong: no industry code has PPE makers as a majority of its filers, so a bucket built from
+      the plausible codes — ophthalmic goods, plastics, work clothing, sanitation, ordnance, air handling —
+      claimed 119 companies and collected Warby Parker, Tupperware, Sturm Ruger, Clorox, Medtronic and Boston
+      Scientific. The best single code, 3842, is four real makers in fifteen filers. PPE role finds every maker
+      that bucket held and thirty more it missed, Brady and UniFirst among them.</p>
+
+    <h3 id="m-context">PPE context, workforce preparedness, and the preparedness tag</h3>
+    <p><strong>PPE context</strong> separates the two reasons a 10-K mentions protective equipment.
+      <em>Occupational exposure</em> is the day job — OSHA, hazmat, respirators in a mine, bloodborne pathogens
+      in a clinic — a known and continuous hazard. <em>Emergency</em> is pandemic, outbreak, disaster or
+      supply-shock framing. The split is almost perfectly chronological: before 2020 the collection is 237
+      occupational documents against 7 emergency; from 2020 it is 1,529 emergency against 181 occupational. PPE
+      went from a workplace-safety topic to a preparedness topic in a single year.</p>
+    <p><strong>Workforce preparedness</strong> is a three-way conjunction, all within one window of a gear
+      mention: an emergency or disaster <em>preparedness activity</em> (plan, drill, emergency response team, kit,
+      stock), the <em>gear itself</em>, and the filer’s <em>own workforce</em>. Dropping any one ruins it —
+      without the workforce test a distributor’s disaster-relief sales qualify, without the activity test every
+      “we gave staff masks” qualifies, and without the gear test every business continuity plan qualifies.
+      Passages that merely list the regulations applying to the filer are labelled <em>regulatory</em> rather
+      than counted as its own activity.</p>
+    <p>The <strong>preparedness</strong> tag is stricter again, and rare. It needs a <em>future</em> event and an
+      <em>action on supply</em> within a sentence of the mention — not the word “preparedness” in a training agenda,
+      and not narration of what the company did during 2020. Widening the window from 150 to 400 characters moves
+      the count from 1 to 10, so the scarcity is real rather than an artefact. Hand-checking found forward-looking
+      <em>risk</em> disclosure outnumbers forward-looking <em>action</em>.</p>
+
+    <h3 id="m-stockpile">The stockpile category</h3>
+    <p>The one category with no proximity rule — it reads the subject of the stockpile sentence instead. It began
+      as <em>any</em> mention of stockpile language, which was a poor guide: “stockpile” is the ordinary word for a
+      heap of mined material beside a pit, and extractive filings also abbreviate <em>property, plant and
+      equipment</em> to PPE, so frac sand and lithium producers crowded in twice over. Of the 386 documents that
+      contain the word, <strong>135 are excluded</strong> — 83 stockpiles of ore and fuel, 12 of general inventory,
+      and 40 where the word sits in boilerplate with no subject (topsoil, railway ties, petroleum coke, groceries,
+      and the pantry-loading every consumer-goods company described in 2021).</p>
+    <p>What remains is <strong>251 documents from 54 companies</strong>: 222 about drugs, vaccines or medical
+      supplies and 29 about protective equipment. <strong>235 of the 251 are countermeasures or
+      prophylaxis</strong> — antivirals, vaccines, antibiotics, the biodefence procurement around smallpox and
+      anthrax. The 16 that are not are ordinary pharmaceutical supply: Aligos, Teva’s European stocking mandates,
+      Dermata’s sponge raw material, Agiliti’s equipment.</p>
+    <p>Two judgement calls are worth knowing. A drug maker’s stockpile counts as a stockpile of drugs even where
+      the sentence names no product — Teva’s <em>“mandatory stockpiling and high penalties in order to prevent
+      supply disruptions”</em> would otherwise be lost, and it is a regulator requiring a private stock, which is
+      close to the question. That licence is given to pharma filers only; extended to everyone it readmits Kroger
+      and Energizer. And Lakeland’s 2008–12 filings are <em>out</em>, because their stockpile sentence lists a
+      federal chemical-weapons programme it sells into — market sizing, not a stock of protective gear.</p>
+    <p>The narrower <em>PPE near stockpile language</em> and <em>Antivirals near stockpile language</em>
+      categories apply a 150-character proximity rule instead, and every one of their documents lands on the
+      subject you would expect.</p>
+
+    <h3 id="m-incentives">Incentive candidates</h3>
+    <p>“Near incentive language” means an incentive term — grant, government contract, tax credit, capacity
+      expansion, reshoring, purchase commitment, BARDA, stockpile, joint venture — sits within 150 characters of a
+      topic mention, outside forward-looking boilerplate. These are <em>candidates</em>: of 240 PPE candidates read
+      individually, 18 survived review, and one of those, Safe Pro’s body armour, was later excluded with the rest
+      of its product family — leaving the <strong>17 marked verified</strong>.</p>
+
+    <h3 id="m-other">Pharma &amp; biotech, and industries</h3>
+    <p><strong>Pharma &amp; biotech</strong> means SIC codes 2833, 2834, 2835, 2836 (drugs, medicinal chemicals,
+      diagnostics, biologicals), 8731 (contract research) and 5122 (drug distribution) — 1,113 documents from
+      303 companies. The include/exclude choice applies to every number, chart and row, ahead of the
+      categories.</p>
+    <p><strong>Industry names</strong> are EDGAR’s own, from the SEC Division of Corporation Finance’s SIC code
+      list — all 308 codes in the collection resolve to a name. <strong>Sector</strong> groups them into the ten
+      standard SIC divisions. Three documents from two business development companies carry no code because
+      EDGAR assigns them none.</p>
+    <p><strong>Source.</strong> EDGAR full-text search, which covers 2001 onward and indexes primary documents,
+      not exhibits. See <a href="guide.html#source">Where the documents come from</a> for the searches and the
+      recall check.</p>
+
+    <footer>
+      Built by the National Center for Disaster Preparedness, Columbia Climate School, from SEC EDGAR filings.
+      Updated 26 November 2026.
+    </footer>
+  </article>
+</div>
+</body>
+</html>
