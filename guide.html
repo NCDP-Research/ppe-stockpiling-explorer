@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Explorer guide — PPE &amp; antiviral stockpiling incentives</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface-1:#fcfcfb; --page:#f9f9f7;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+  --series-1:#2a78d6; --good:#0ca30c; --critical:#d03b3b; --chip:#f0efec;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --surface-1:#1a1a19; --page:#0d0d0d;
+    --text-primary:#f0efec; --text-secondary:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+    --series-1:#5b9ef0; --chip:#2c2c2a;
+  }
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:16px; }
+body { margin:0; background:var(--page); color:var(--text-primary);
+  font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif; }
+a { color:var(--series-1); }
+header { background:var(--surface-1); border-bottom:1px solid var(--border);
+  padding:18px 24px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+header h1 { margin:0; font-size:19px; font-weight:650; letter-spacing:-.01em; }
+header .sub { color:var(--text-secondary); font-size:13px; }
+.btn { display:inline-block; font-size:13.5px; font-weight:600; text-decoration:none;
+  background:var(--text-primary); color:var(--surface-1); padding:8px 14px; border-radius:7px; }
+.wrap { display:grid; grid-template-columns:230px minmax(0,1fr); gap:40px;
+  max-width:1120px; margin:0 auto; padding:28px 24px 80px; }
+nav.toc { position:sticky; top:16px; align-self:start; font-size:13.5px; }
+nav.toc b { display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--muted); margin-bottom:8px; }
+nav.toc a { display:block; color:var(--text-secondary); text-decoration:none; padding:4px 0 4px 10px;
+  border-left:2px solid var(--grid); }
+nav.toc a:hover { color:var(--text-primary); border-left-color:var(--series-1); }
+article { max-width:760px; min-width:0; }
+h2 { font-size:21px; font-weight:650; letter-spacing:-.01em; margin:44px 0 10px;
+  padding-top:6px; border-top:1px solid var(--border); }
+h2:first-of-type { margin-top:0; border-top:none; padding-top:0; }
+h3 { font-size:15.5px; font-weight:650; margin:26px 0 6px; }
+p, li { color:var(--text-primary); }
+.lead { font-size:17px; line-height:1.6; color:var(--text-secondary); margin:0 0 18px; }
+.muted { color:var(--text-secondary); }
+code, kbd { font:13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  background:var(--chip); padding:1px 5px; border-radius:4px; }
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:18px 0 6px; }
+.stat { background:var(--surface-1); border:1px solid var(--border); border-radius:9px; padding:10px 14px; }
+.stat .v { font-size:22px; font-weight:650; font-variant-numeric:tabular-nums; }
+.stat .l { font-size:12px; color:var(--text-secondary); }
+ol.steps { padding-left:0; list-style:none; counter-reset:s; }
+ol.steps li { counter-increment:s; position:relative; padding:0 0 12px 40px; }
+ol.steps li::before { content:counter(s); position:absolute; left:0; top:1px; width:26px; height:26px;
+  border-radius:50%; background:var(--text-primary); color:var(--surface-1); font-size:13px;
+  font-weight:650; display:grid; place-items:center; }
+table { width:100%; border-collapse:collapse; font-size:14px; margin:10px 0 6px;
+  background:var(--surface-1); border:1px solid var(--border); border-radius:9px; overflow:hidden; }
+th { text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--text-secondary); padding:9px 12px; border-bottom:1px solid var(--border); }
+td { padding:9px 12px; border-bottom:1px solid var(--grid); vertical-align:top; }
+tr:last-child td { border-bottom:none; }
+td.n { font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap; color:var(--text-secondary); }
+td .sub { padding-left:16px; display:block; }
+.tbl { overflow-x:auto; }
+.ui { display:inline-block; font-size:13px; font-weight:600; border:1px solid var(--axis);
+  border-radius:6px; padding:0 7px; background:var(--surface-1); white-space:nowrap; }
+.tag { display:inline-block; font-size:11.5px; padding:1px 8px; border-radius:999px;
+  border:1px solid var(--border); color:var(--text-secondary); white-space:nowrap; }
+.tag.ver { border-color:var(--good); color:var(--good); font-weight:600; }
+.tag.priv { border-color:var(--critical); color:var(--critical); font-weight:600; }
+.chk { display:inline-block; font-size:11.5px; font-weight:650; color:var(--good); white-space:nowrap; }
+.note { background:var(--surface-1); border:1px solid var(--border); border-left:3px solid var(--series-1);
+  border-radius:8px; padding:12px 16px; margin:16px 0; font-size:14px; }
+.note.warn { border-left-color:var(--critical); }
+.recipe { background:var(--surface-1); border:1px solid var(--border); border-radius:9px;
+  padding:12px 16px; margin:12px 0; }
+.recipe h3 { margin:0 0 4px; font-size:15px; }
+.recipe p { margin:4px 0 0; font-size:14px; }
+dl { margin:8px 0; }
+dt { font-weight:650; margin-top:12px; }
+dd { margin:2px 0 0; color:var(--text-secondary); }
+footer { font-size:13px; color:var(--muted); margin-top:48px; padding-top:16px; border-top:1px solid var(--border); }
+@media (max-width:860px) {
+  .wrap { grid-template-columns:1fr; gap:10px; padding:20px 16px 60px; }
+  nav.toc { position:static; columns:2; column-gap:16px; margin-bottom:12px; }
+  .stats { grid-template-columns:repeat(2,1fr); }
+  header { padding:14px 16px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Explorer guide</h1>
+    <div class="sub">PPE &amp; antiviral stockpiling incentives — EDGAR 10-K explorer</div>
+  </div>
+  <a class="btn" href="./">Open the explorer →</a>
+</header>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Contents">
+    <b>Contents</b>
+    <a href="#what">What this is</a>
+    <a href="#start">Quick start</a>
+    <a href="#screen">The screen</a>
+    <a href="#filters">Filters</a>
+    <a href="#categories">Categories explained</a>
+    <a href="#results">Reading a result</a>
+    <a href="#recipes">Questions to try</a>
+    <a href="#limits">What to keep in mind</a>
+    <a href="#source">Where the documents come from</a>
+    <a href="#glossary">Glossary</a>
+  </nav>
+
+  <article>
+    <h2 id="what">What this is</h2>
+    <p class="lead">A searchable collection of the annual reports U.S. public companies file with the SEC,
+      built to answer one question: <strong>what incentives could encourage private companies to stockpile
+      protective equipment (masks, gloves, respirators) and antiviral medicines?</strong></p>
+    <p>Every document has been read by software that tags what it says: whether the company provides PPE
+      to its staff, mentions a stockpile and whose it is, describes an incentive, names the Strategic
+      National Stockpile or a health department, and more. A smaller set of the most important findings was
+      checked by hand. You can filter on any combination of these tags, read the exact passage behind each
+      one, and open the original filing on sec.gov.</p>
+    <div class="stats">
+      <div class="stat"><div class="v">4,121</div><div class="l">documents</div></div>
+      <div class="stat"><div class="v">1,483</div><div class="l">companies</div></div>
+      <div class="stat"><div class="v">2001–2026</div><div class="l">filing years</div></div>
+      <div class="stat"><div class="v">24</div><div class="l">categories</div></div>
+    </div>
+    <p class="muted" style="font-size:13.5px">Counts in this guide are as of 24 November 2026.</p>
+
+    <h2 id="start">Quick start</h2>
+    <ol class="steps">
+      <li><strong>Pick a time span and the kind of company</strong> under <span class="ui">Time and companies</span>
+        in the left-hand panel — for example <span class="ui">2020–26</span>, or <span class="ui">Exclude</span>
+        pharma &amp; biotech to focus on ordinary employers.</li>
+      <li><strong>Tick one or more categories.</strong> The number beside each tells you how many documents it
+        would show given your other choices.</li>
+      <li><strong>Read the results.</strong> Click any row to open the passage that put it in your categories, with
+        links to the filing on sec.gov.</li>
+      <li><strong>Remove a filter</strong> with the × on its chip above the charts, or start again with
+        <span class="ui">Clear all</span>.</li>
+    </ol>
+
+    <h2 id="screen">The screen</h2>
+    <dl>
+      <dt>Filters (left)</dt>
+      <dd>Search, then <em>Time and companies</em>, <em>Categories</em>, <em>PPE detail</em> and <em>Stockpile
+        detail</em>. Sections fold away; a blue badge on a folded section or category group says how many
+        filters inside it are on, so nothing is ever hidden. On a phone the panel slides in from the
+        <span class="ui">Filters</span> button at the top.</dd>
+      <dt>Headline numbers</dt>
+      <dd>Four tiles: documents matching your filters, how many of those mention PPE, how many mention
+        antivirals, and how many mention a private-sector stockpile — the thing the research is looking for.</dd>
+      <dt>Filter chips</dt>
+      <dd>One chip for each active filter, just below the numbers. The × removes that filter.</dd>
+      <dt>Charts</dt>
+      <dd><em>Topic mentions per year</em> and <em>Incentive language per year</em>, for whatever is filtered.
+        Hover for each year’s numbers. They are separate charts because PPE mentions outnumber incentive
+        mentions about a hundredfold.</dd>
+      <dt>Results table</dt>
+      <dd>One row per document: company, filing date, form, industry, how many times it mentions PPE and
+        antivirals, and tags (see <a href="#results">Reading a result</a>). Click a column heading to sort.
+        <span class="ui">Documents</span> / <span class="ui">Filings</span> / <span class="ui">Companies</span>
+        above the table changes what every number on the page counts.</dd>
+      <dt>Dark mode</dt>
+      <dd>The button at the top right.</dd>
+    </dl>
+
+    <h2 id="filters">Filters</h2>
+    <h3>Search</h3>
+    <p>Finds a company name, CIK number, industry, or any word in the extracted passages — for example
+      <code>Lakeland</code>, <code>798081</code>, <code>stockpile</code> or <code>their employees</code>.</p>
+    <p class="muted">When the explorer is run locally with its search server, a checkbox appears to search the
+      full text of every filing instead. Quoted phrases, <code>OR</code>, <code>NOT</code> and
+      <code>NEAR(word1 word2, 10)</code> work there. This is not available on the public website.</p>
+
+    <h3>Time and companies</h3>
+    <table class="tbl">
+      <tr><th>Control</th><th>What it does</th></tr>
+      <tr><td>Filed</td><td>All years, or 2001–10, 2011–19, 2020–26.</td></tr>
+      <tr><td>Pharma &amp; biotech companies</td><td>Include them, exclude them, or show only them. Drug makers
+        dominate anything about antivirals, countermeasures or the Strategic National Stockpile, so excluding
+        them is the quickest way to see ordinary employers.</td></tr>
+      <tr><td>Sector, Industry</td><td>The ten broad industry divisions, then the specific industry codes
+        (SIC) within the one you pick.</td></tr>
+      <tr><td>Place in the supply chain</td><td>PPE makers, medical supply distributors, healthcare providers,
+        pharma &amp; biotech, or general employers — worked out from the industry code.</td></tr>
+    </table>
+
+    <h3>Categories</h3>
+    <p>Twenty-four tags in five groups, explained one by one <a href="#categories">below</a>. A few things
+      about how they behave:</p>
+    <ul>
+      <li><strong>Any / All</strong> beside the heading decides how ticked categories combine.
+        <span class="ui">Any</span> shows documents in at least one; <span class="ui">All</span> shows only
+        documents in every one — the way to find overlaps, which are usually small.</li>
+      <li><strong>The numbers update</strong> as you change other filters. A greyed-out category has nothing left
+        to show.</li>
+      <li><strong>Indented items</strong> are narrower cuts of the item above them.</li>
+      <li><strong>Hover</strong> over any category for a one-line definition.</li>
+    </ul>
+
+    <h3>PPE detail</h3>
+    <table class="tbl">
+      <tr><th>Control</th><th>What it does</th></tr>
+      <tr><td>What the company does with PPE</td><td>In this filing: buys it for staff, makes or sells it, both,
+        mentions it only as a regulatory requirement, or unclear. Or across all the company’s filings: never
+        makes PPE, or makes it in at least one.</td></tr>
+      <tr><td>Why PPE is mentioned</td><td>An emergency or pandemic, everyday workplace hazards, both, or no
+        reason given.</td></tr>
+      <tr><td>Evidence for the PPE role</td><td>How the role above was decided, strongest first — from “sells or
+        makes” down to “staff nearby” (PPE and employees merely mentioned close together). Use it to keep
+        only the confident calls.</td></tr>
+    </table>
+
+    <h3>Stockpile detail</h3>
+    <p>Both controls apply only to documents in the stockpile category, so choosing either one narrows results to
+      it.</p>
+    <table class="tbl">
+      <tr><th>Control</th><th>What it does</th></tr>
+      <tr><td>What is stockpiled</td><td>Protective equipment; drugs, vaccines and medical supplies; or only
+        medical countermeasures and prophylaxis.</td></tr>
+      <tr><td>Whose stockpile it is</td><td>A government, the company’s customers, the company itself (as stock
+        to sell, or as preparedness), other private companies, or nobody named. Most stockpiles in these filings
+        belong to governments; companies mentioning them are usually suppliers.</td></tr>
+    </table>
+
+    <h2 id="categories">Categories explained</h2>
+    <p>The <span class="chk">✓ checked</span> mark means every document in the category was read and confirmed
+      by a person. The rest are tagged by software. Items named “near … language” are <em>candidates</em>: two
+      words appearing close together, not a confirmed finding.</p>
+
+    <h3>What the filing mentions</h3>
+    <div class="tbl"><table>
+      <tr><th>Category</th><th>Means</th><th style="text-align:right">Docs</th></tr>
+      <tr><td>PPE</td><td>Uses the phrase “personal protective equipment”.</td><td class="n">3,177</td></tr>
+      <tr><td>Antivirals</td><td>Mentions antiviral drugs.</td><td class="n">936</td></tr>
+      <tr><td>N95 or another named respirator</td><td>Names a respirator class — N95, KN95, FFP2, P100 and similar.</td><td class="n">50</td></tr>
+    </table></div>
+
+    <h3>Employers and their own staff</h3>
+    <p class="muted" style="font-size:14px">The demand side: what companies say they do for their workforce. Read
+      top to bottom, each step asks more of a company than the last.</p>
+    <div class="tbl"><table>
+      <tr><th>Category</th><th>Means</th><th style="text-align:right">Docs</th></tr>
+      <tr><td>Provides PPE to its own staff</td><td>The company says it gives PPE to its employees. Nearly every
+        large employer does, mostly since 2020.</td><td class="n">2,293</td></tr>
+      <tr><td>Has a human capital section</td><td>The workforce section every 10-K must include since November
+        2020 (Regulation S-K Item 101).</td><td class="n">2,595</td></tr>
+      <tr><td>PPE in the human capital section</td><td>PPE is mentioned inside that section.</td><td class="n">1,055</td></tr>
+      <tr><td><span class="sub">for an emergency</span></td><td>The PPE sentence names a pandemic, infectious
+        disease or natural disaster — almost always COVID-19.</td><td class="n">851</td></tr>
+      <tr><td><span class="sub">for everyday job safety</span></td><td>The PPE sentence is about ordinary workplace
+        hazards.</td><td class="n">325</td></tr>
+      <tr><td><span class="sub">with a plan or supply in place beforehand</span></td><td>A pandemic or business
+        continuity plan that existed before the emergency, or a standing supply of PPE — preparedness rather
+        than response.</td><td class="n">15</td></tr>
+      <tr><td>Ties PPE to emergency preparedness</td><td>A preparedness activity, such as business continuity or
+        pandemic planning, linked to PPE for staff.</td><td class="n">82</td></tr>
+      <tr><td>Preparedness, checked by hand <span class="chk">✓</span></td><td>Forward-looking action on PPE
+        supply, or a stated risk to it, confirmed by reading.</td><td class="n">5</td></tr>
+      <tr><td>Holds a stock of PPE for staff <span class="chk">✓</span></td><td>A company that only buys PPE
+        describing a stock of it for its own people.</td><td class="n">10</td></tr>
+    </table></div>
+
+    <h3>Stockpiling</h3>
+    <div class="tbl"><table>
+      <tr><th>Category</th><th>Means</th><th style="text-align:right">Docs</th></tr>
+      <tr><td>Stockpile of PPE or medical supplies</td><td>Stockpile language about protective equipment, drugs,
+        vaccines or medical supplies (not ore, grain or parts). Mostly government stockpiles.</td><td class="n">251</td></tr>
+      <tr><td>PPE near stockpile language</td><td>Candidates: a stockpile word close to a PPE mention.</td><td class="n">8</td></tr>
+      <tr><td>Antivirals near stockpile language</td><td>Candidates: a stockpile word close to an antiviral mention.</td><td class="n">91</td></tr>
+      <tr><td>Stockpiling by an unnamed private buyer</td><td>A supplier reports that private customers stockpiled,
+        without naming them — the clearest evidence that private stockpiling happened.</td><td class="n">6</td></tr>
+      <tr><td>PPE maker holds its own stockpile</td><td>A PPE manufacturer keeping finished goods back for surges in
+        demand.</td><td class="n">7</td></tr>
+    </table></div>
+
+    <h3>Incentives</h3>
+    <div class="tbl"><table>
+      <tr><th>Category</th><th>Means</th><th style="text-align:right">Docs</th></tr>
+      <tr><td>Verified incentive <span class="chk">✓</span></td><td>A passage describing an incentive —
+        public funding, purchase commitments, capacity investment, tax credits — confirmed by reading.</td><td class="n">17</td></tr>
+      <tr><td>Incentive paid to a PPE maker</td><td>An outside party pays for a maker’s production capacity (for
+        example a Defense Production Act award) or for its customers’ purchases (for example firefighter
+        grants).</td><td class="n">28</td></tr>
+      <tr><td>PPE near incentive language</td><td>Candidates: an incentive term within 150 characters of a PPE
+        mention.</td><td class="n">59</td></tr>
+      <tr><td>Antivirals near incentive language</td><td>Candidates: an incentive term within 150 characters of an
+        antiviral mention.</td><td class="n">212</td></tr>
+    </table></div>
+
+    <h3>Government and public health</h3>
+    <p class="muted" style="font-size:14px">Public programmes and agencies. These are not private stockpiling, but
+      they show how public supply reaches people.</p>
+    <div class="tbl"><table>
+      <tr><th>Category</th><th>Means</th><th style="text-align:right">Docs</th></tr>
+      <tr><td>Strategic National Stockpile</td><td>Names the federal SNS. Almost every such company is a supplier to
+        it; the tag on each row says which role.</td><td class="n">133</td></tr>
+      <tr><td>Health department</td><td>Names a state or local health department (not the federal HHS).</td><td class="n">580</td></tr>
+      <tr><td><span class="sub">as partner, buyer, SNS channel or PPE directive</span></td><td>The department’s
+        role is about supply: it partnered with the company on testing or vaccination, bought its products,
+        is described as receiving SNS supplies, or directed its PPE measures.</td><td class="n">60</td></tr>
+    </table></div>
+
+    <h2 id="results">Reading a result</h2>
+    <p>Each row carries tags summarising what was found. Two colours mark the signals closest to the research
+      question:</p>
+    <ul>
+      <li><span class="tag ver">verified</span> — a hand-checked incentive, with its mechanism.</li>
+      <li><span class="tag priv">workforce PPE stock</span> <span class="tag priv">PPE in human capital section</span>
+        — stockpiling, preparedness and workforce-PPE signals.</li>
+      <li><span class="tag">SNS · supplies it</span> <span class="tag">health dept · regulator</span>
+        <span class="tag">buys PPE</span> — everything else, in grey.</li>
+    </ul>
+    <p><strong>Click a row</strong> to open its passages. Each panel is titled with the category it supports and
+      shows the sentence that put the document there; words you searched for are highlighted. Below them:</p>
+    <ul>
+      <li><strong>Open this document on sec.gov</strong> — the exact file the passage came from.</li>
+      <li><strong>All files in the filing</strong> — the whole submission, which often holds dozens of
+        documents.</li>
+    </ul>
+    <p>A few other tags explain the document itself: <span class="tag">exhibit</span> means an attachment to the
+      10-K rather than its main text; <span class="tag priv">reattributed</span> means the document describes a
+      different company from the one that filed it; <span class="tag">body armour — not PPE</span> marks filings
+      where “PPE” means something else.</p>
+
+    <h2 id="recipes">Questions to try</h2>
+    <div class="recipe">
+      <h3>Which employers say they keep PPE in reserve for their staff?</h3>
+      <p>Tick <span class="ui">Holds a stock of PPE for staff</span>. Ten documents, all checked by hand.</p>
+    </div>
+    <div class="recipe">
+      <h3>Did any company plan for a pandemic before COVID?</h3>
+      <p>Tick <span class="ui">with a plan or supply in place beforehand</span> under <em>PPE in the human capital
+        section</em>. Kroger, Xerox, Eversource and others describe pandemic plans they activated in 2020;
+        hospital operators describe standing PPE supplies.</p>
+    </div>
+    <div class="recipe">
+      <h3>What incentives exist today?</h3>
+      <p>Tick <span class="ui">Verified incentive</span> and <span class="ui">Incentive paid to a PPE maker</span>
+        with <span class="ui">Any</span>. Expand rows to see the mechanism: public funding, purchase commitments,
+        capacity awards.</p>
+    </div>
+    <div class="recipe">
+      <h3>Is there evidence that private stockpiling actually happened?</h3>
+      <p>Tick <span class="ui">Stockpiling by an unnamed private buyer</span> and <span class="ui">PPE maker holds
+        its own stockpile</span>. The first is suppliers reporting that customers stockpiled; the second, makers
+        holding stock themselves.</p>
+    </div>
+    <div class="recipe">
+      <h3>Who supplies the Strategic National Stockpile?</h3>
+      <p>Tick <span class="ui">Strategic National Stockpile</span>. Each row’s tag says whether the company
+        supplies it, hopes to, or only mentions it. Set Pharma &amp; biotech to <span class="ui">Exclude</span> and
+        six documents remain, among them the only two PPE suppliers: Owens &amp; Minor, under a Defense
+        Production Act contract for N95s, and Agiliti, which maintains the SNS’s ventilators and powered
+        respirators.</p>
+    </div>
+    <div class="recipe">
+      <h3>Which companies both provide PPE and plan for emergencies?</h3>
+      <p>Tick <span class="ui">Provides PPE to its own staff</span> and <span class="ui">Ties PPE to emergency
+        preparedness</span>, then switch the categories to <span class="ui">All</span>.</p>
+    </div>
+
+    <h2 id="limits">What to keep in mind</h2>
+    <div class="note warn">
+      <strong>Most tags are automated.</strong> They were tested against hand-read examples, but they can be
+      wrong in both directions. Treat a tag as a pointer to a passage worth reading, and read it before citing
+      it. The categories marked <span class="chk">✓ checked</span> are the exception.
+    </div>
+    <ul>
+      <li><strong>Saying is not doing.</strong> A 10-K reports what a company chooses to disclose. A company can hold
+        PPE without mentioning it, and a mention is not proof of a stockpile.</li>
+      <li><strong>Annual reports only.</strong> The collection is Form 10-K and 10-K/A — not quarterly reports,
+        proxy statements, or anything outside the SEC.</li>
+      <li><strong>Public companies only.</strong> Private firms, hospitals run as non-profits, and government
+        bodies do not file 10-Ks.</li>
+      <li><strong>The pandemic dominates.</strong> Most PPE language dates from 2020–23. The human capital rule that
+        took effect in November 2020 is a large part of why: it is where employers now describe what they do
+        for staff.</li>
+      <li><strong>Candidates are not findings.</strong> “Near … language” categories pair two words that appear
+        close together; many are coincidences.</li>
+      <li><strong>Counts change if the data is rebuilt.</strong> The numbers here are from 24 November 2026.</li>
+    </ul>
+
+    <h2 id="source">Where the documents come from</h2>
+    <p>Three searches of the SEC’s EDGAR full-text search, limited to annual reports (Form 10-K and 10-K/A):</p>
+    <table class="tbl">
+      <tr><th>Search</th><th style="text-align:right">Documents</th></tr>
+      <tr><td>“personal protective equipment”</td><td class="n">3,216</td></tr>
+      <tr><td>“antiviral drug” or “antiviral drugs”</td><td class="n">781</td></tr>
+      <tr><td>“stockpile” together with “personal protective equipment”</td><td class="n">302</td></tr>
+    </table>
+    <p class="muted" style="font-size:14px">Documents found by more than one search are counted once in the
+      collection, so the rows add to more than 4,121.</p>
+    <p>To check the searches missed little, the annual reports of every S&amp;P 500 company were downloaded
+      separately and compared. Of 342 of those documents that use the phrase “personal protective equipment”,
+      341 had been found by the search — <strong>99.7%</strong>. The single miss was added.</p>
+
+    <h2 id="glossary">Glossary</h2>
+    <dl>
+      <dt>10-K</dt><dd>The annual report U.S. public companies file with the SEC. A 10-K/A amends one.</dd>
+      <dt>EDGAR</dt><dd>The SEC’s public database of company filings.</dd>
+      <dt>CIK</dt><dd>Central Index Key — the SEC’s ID number for a company.</dd>
+      <dt>Accession number</dt><dd>The ID of one filing; a filing can contain many documents.</dd>
+      <dt>SIC code</dt><dd>Standard Industrial Classification — the four-digit industry code the SEC assigns.</dd>
+      <dt>PPE</dt><dd>Personal protective equipment: masks, respirators, gloves, gowns, face shields.</dd>
+      <dt>Human capital section</dt><dd>The workforce disclosure required by Regulation S-K Item 101 since
+        November 2020: headcount, plus how the company manages and protects its people.</dd>
+      <dt>Strategic National Stockpile (SNS)</dt><dd>The federal reserve of medicines and supplies, released to
+        the public through state and local health departments in an emergency.</dd>
+      <dt>HHS, ASPR, BARDA</dt><dd>The U.S. Department of Health and Human Services, and two of its offices that
+        buy and fund medical countermeasures.</dd>
+      <dt>Defense Production Act (DPA)</dt><dd>Federal law letting the government direct or fund production of
+        critical goods; used for N95 respirators in 2020.</dd>
+      <dt>Countermeasure</dt><dd>A drug, vaccine or device for a public-health threat — for example a smallpox
+        antiviral or an anthrax vaccine.</dd>
+      <dt>Smaller reporting company</dt><dd>A company below the SEC’s size threshold, allowed to give lighter
+        disclosures — including only a headcount in place of a full human capital section.</dd>
+    </dl>
+
+    <footer>
+      Built by the National Center for Disaster Preparedness, Columbia Climate School, from SEC EDGAR filings.
+      Guide updated 24 November 2026.
+    </footer>
+  </article>
+</div>
+</body>
+</html>
